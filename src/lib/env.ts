@@ -10,8 +10,26 @@
 export const isServerless = Boolean(process.env.VERCEL);
 
 export const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+
+/**
+ * SUPABASE_URL is the one secret-adjacent variable that gets *rendered into public HTML*,
+ * because publicUrl() builds every image src from it. Pasting the Postgres connection
+ * string here — easy, since both are called a URL — would put the database credentials in
+ * the page source of every listing. So it must look like the project API origin, and
+ * anything else is treated as unconfigured and fails loudly rather than being published.
+ */
+export const supabaseUrlIsValid = (() => {
+  const raw = process.env.SUPABASE_URL;
+  if (!raw) return false;
+  try {
+    return new URL(raw).protocol === "https:";
+  } catch {
+    return false;
+  }
+})();
+
 export const hasSupabaseStorage = Boolean(
-  process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY,
+  supabaseUrlIsValid && process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 const SETUP_DOC = "See docs/DEPLOY.md.";
@@ -27,6 +45,13 @@ export function assertDatabaseConfigured(): void {
 
 export function assertStorageConfigured(): void {
   if (hasSupabaseStorage || !isServerless) return;
+  if (process.env.SUPABASE_URL && !supabaseUrlIsValid) {
+    throw new Error(
+      "SUPABASE_URL is not an https:// URL. It should be the project API origin, " +
+        "https://<ref>.supabase.co — not the Postgres connection string, which belongs " +
+        `in DATABASE_URL. Image URLs are built from this value and are public. ${SETUP_DOC}`,
+    );
+  }
   throw new Error(
     "SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set. Uploads would be written to " +
       `public/uploads, which is read-only here and would not persist between requests. ${SETUP_DOC}`,

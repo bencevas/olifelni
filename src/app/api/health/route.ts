@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 import { db, listings } from "@/lib/db";
-import { hasDatabaseUrl, hasSupabaseStorage, isServerless } from "@/lib/env";
+import { hasDatabaseUrl, hasSupabaseStorage, isServerless, supabaseUrlIsValid } from "@/lib/env";
 import { emailConfigured } from "@/lib/notify";
 import { describeError, diagnoseEndpoint, endpointOf, hintForCode } from "@/lib/db-errors";
 
@@ -47,7 +47,9 @@ export async function GET() {
   }
   if (isServerless && !hasSupabaseStorage) {
     problems.push(
-      "SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set, so listing photos will not load or upload.",
+      process.env.SUPABASE_URL && !supabaseUrlIsValid
+        ? "SUPABASE_URL is not an https:// URL — it looks like the Postgres connection string, which belongs in DATABASE_URL. Set it to the project API origin, https://<ref>.supabase.co. Every image src is built from this value, so a wrong one is rendered into public HTML."
+        : "SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set, so listing photos will not load or upload.",
     );
   }
 
