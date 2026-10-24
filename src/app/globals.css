@@ -1,25 +1,59 @@
 @import "tailwindcss";
 
+/* Theme is a class on <html>, set before paint by the script in layout.tsx. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * Brand red (#D22730) is the logo's and stays. Everything around it was lifted
  * from the Wix site as flat greys; the alloys are photographed on grey concrete,
  * so on a grey card the product had nothing to sit against. The carbon tones give
  * the chrome an edge to read against.
+ *
+ * Values here are the light theme. The dark theme overrides the variables below,
+ * so components keep using one set of class names.
  */
 @theme {
-  --color-ink: #16171a;
-  --color-ink-soft: #6b6f76;
   --color-brand: #d22730;
   --color-brand-dark: #ae1d26;
+
+  /* Bands that are dark in both themes: hero, delivery, page headers, footer. */
   --color-carbon: #0d0e11;
   --color-carbon-soft: #191b20;
   --color-carbon-line: #2a2d34;
+
+  --color-surface: #ffffff;
+  --color-sheet: #f5f5f6;
+  --color-ink: #16171a;
+  --color-ink-soft: #6b6f76;
   --color-rule: #d9dadd;
   --color-rule-soft: #ecedef;
-  --color-sheet: #f5f5f6;
+
+  /* Red as *text*. #D22730 on near-black is only ~4:1, so it lifts in the dark theme. */
+  --color-brand-ink: #d22730;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  --color-surface: #141519;
+  --color-sheet: #1c1e24;
+  --color-ink: #e8e9eb;
+  --color-ink-soft: #9ba1a9;
+  --color-rule: #31343b;
+  --color-rule-soft: #26282e;
+  --color-brand-ink: #ef5a62;
+
+  /* Kept below the page surface so the bands still read as recessed, not as a seam. */
+  --color-carbon: #0b0c0e;
+  --color-carbon-soft: #15171b;
+  --color-carbon-line: #2b2e35;
+
+  color-scheme: dark;
 }
 
 html {
@@ -27,7 +61,7 @@ html {
 }
 
 body {
-  background: #fff;
+  background: var(--color-surface);
   color: var(--color-ink);
   font-family: var(--font-sans);
 }

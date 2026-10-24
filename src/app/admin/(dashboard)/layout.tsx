@@ -18,7 +18,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="flex-1">
-      <div className="border-b border-rule-soft bg-white">
+      <div className="border-b border-rule-soft bg-surface">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6">
           <Link href="/admin" className="flex items-center gap-3">
             <Logo className="h-9" />
@@ -26,8 +26,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </Link>
 
           <nav className="flex items-center gap-5 text-[15px] font-semibold">
-            <Link href="/admin" className="hover:text-brand">Hirdetések</Link>
-            <Link href="/admin/erdeklodesek" className="hover:text-brand">
+            <Link href="/admin" className="hover:text-brand-ink">Hirdetések</Link>
+            <Link href="/admin/erdeklodesek" className="hover:text-brand-ink">
               Érdeklődések
               {pending > 0 && (
                 <span className="ml-1.5 rounded-full bg-brand px-2 py-0.5 text-xs text-white">
@@ -35,11 +35,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 </span>
               )}
             </Link>
-            <Link href="/" className="text-ink-soft hover:text-brand">Weboldal ↗</Link>
+            <Link href="/" className="text-ink-soft hover:text-brand-ink">Weboldal ↗</Link>
           </nav>
 
           <form action={logoutAction} className="ml-auto">
-            <button type="submit" className="text-sm text-ink-soft hover:text-brand">
+            <button type="submit" className="text-sm text-ink-soft hover:text-brand-ink">
               Kilépés ({user.email})
             </button>
           </form>

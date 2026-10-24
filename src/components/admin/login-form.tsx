@@ -35,7 +35,7 @@ export function LoginForm() {
         />
       </label>
       {state.error && (
-        <p role="alert" className="rounded-xl bg-brand/10 px-3.5 py-2.5 text-sm font-semibold text-brand">
+        <p role="alert" className="rounded-xl bg-brand/10 px-3.5 py-2.5 text-sm font-semibold text-brand-ink">
           {state.error}
         </p>
       )}

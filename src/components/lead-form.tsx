@@ -31,18 +31,18 @@ export function LeadForm({
 
   if (state.ok) {
     return (
-      <div className="rounded-2xl border border-rule-soft bg-white p-8 text-center">
+      <div className="rounded-2xl border border-rule-soft bg-surface p-8 text-center">
         <p className="text-lg font-extrabold">Köszönjük, megkaptuk!</p>
         <p className="mt-1.5 text-ink-soft">
           Hamarosan keresünk. Ha sürgős, hívj minket:{" "}
-          <a href={SITE.phoneHref} className="font-bold text-brand">{SITE.phone}</a>
+          <a href={SITE.phoneHref} className="font-bold text-brand-ink">{SITE.phone}</a>
         </p>
       </div>
     );
   }
 
   const field =
-    "w-full rounded-xl border border-rule bg-white px-3.5 py-3 text-[15px] transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+    "w-full rounded-xl border border-rule bg-surface px-3.5 py-3 text-[15px] transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
 
   return (
     <form action={action} className="space-y-3">
@@ -82,7 +82,7 @@ export function LeadForm({
       </label>
 
       {state.error && (
-        <p role="alert" className="rounded-lg bg-brand/10 px-3.5 py-2.5 text-sm font-semibold text-brand">
+        <p role="alert" className="rounded-lg bg-brand/10 px-3.5 py-2.5 text-sm font-semibold text-brand-ink">
           {state.error}
         </p>
       )}

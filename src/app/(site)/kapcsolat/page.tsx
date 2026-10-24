@@ -48,7 +48,7 @@ export default function ContactPage() {
 
             <dl className="mt-8">
               <Row label="E-mail">
-                <a href={`mailto:${SITE.email}`} className="font-semibold hover:text-brand">
+                <a href={`mailto:${SITE.email}`} className="font-semibold hover:text-brand-ink">
                   {SITE.email}
                 </a>
               </Row>
@@ -57,7 +57,7 @@ export default function ContactPage() {
                   href={SITE.mapsUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-semibold hover:text-brand"
+                  className="font-semibold hover:text-brand-ink"
                 >
                   {SITE.address}
                 </a>

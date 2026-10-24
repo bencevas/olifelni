@@ -26,7 +26,7 @@ export function SortSelect() {
             sp.delete(PARAM.page);
             router.push(sp.toString() ? `?${sp}` : "?", { scroll: false });
           }}
-          className="h-10 appearance-none rounded-lg border border-rule bg-white pl-3 pr-9 text-sm font-semibold transition-colors hover:border-ink-soft focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+          className="h-10 appearance-none rounded-lg border border-rule bg-surface pl-3 pr-9 text-sm font-semibold transition-colors hover:border-ink-soft focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         >
           {OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>

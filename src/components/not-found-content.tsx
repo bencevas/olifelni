@@ -8,7 +8,7 @@ import { SITE } from "@/lib/site";
 export function NotFoundContent() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 lg:py-28">
-      <p className="font-display text-7xl font-extrabold tracking-tight text-brand tnum">404</p>
+      <p className="font-display text-7xl font-extrabold tracking-tight text-brand-ink tnum">404</p>
       <h1 className="mt-4 text-3xl font-extrabold sm:text-4xl">
         Ez az oldal nem található
       </h1>

@@ -98,7 +98,7 @@ export function Filters({
         </button>
 
         {mobileOpen && (
-          <div className="fixed inset-0 z-50 flex flex-col bg-white">
+          <div className="fixed inset-0 z-50 flex flex-col bg-surface">
             <div className="flex items-center justify-between border-b border-rule-soft px-4 py-4">
               <p className="text-lg font-extrabold">Szűrő</p>
               <button type="button" onClick={() => setMobileOpen(false)} aria-label="Bezárás" className="h-9 w-9">
@@ -137,7 +137,7 @@ export function Filters({
               <button
                 type="button"
                 onClick={clearAll}
-                className="text-sm font-semibold text-brand hover:underline"
+                className="text-sm font-semibold text-brand-ink hover:underline"
               >
                 Törlés
               </button>
@@ -171,7 +171,7 @@ function FilterGroup({
       >
         <span>
           {group.label}
-          {selected.length > 0 && <span className="ml-2 text-sm text-brand">({selected.length})</span>}
+          {selected.length > 0 && <span className="ml-2 text-sm text-brand-ink">({selected.length})</span>}
         </span>
         <span className="text-xl leading-none text-ink-soft">{open ? "−" : "+"}</span>
       </button>

@@ -73,7 +73,7 @@ export default async function HomePage() {
             <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.03] text-white sm:text-6xl lg:text-[4.1rem]">
               Gyári alufelnik
               <br />
-              <span className="text-brand">jó áron.</span>
+              <span className="text-brand-ink">jó áron.</span>
             </h1>
 
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/75">
@@ -167,18 +167,18 @@ export default async function HomePage() {
             </p>
             <dl className="mt-9 space-y-5">
               <Contact label="Telefon">
-                <a className="text-lg font-bold text-brand hover:underline" href={SITE.phoneHref}>
+                <a className="text-lg font-bold text-brand-ink hover:underline" href={SITE.phoneHref}>
                   {SITE.phone}
                 </a>
               </Contact>
               <Contact label="E-mail">
-                <a className="font-semibold hover:text-brand" href={`mailto:${SITE.email}`}>
+                <a className="font-semibold hover:text-brand-ink" href={`mailto:${SITE.email}`}>
                   {SITE.email}
                 </a>
               </Contact>
               <Contact label="Cím">
                 <a
-                  className="font-semibold hover:text-brand"
+                  className="font-semibold hover:text-brand-ink"
                   href={SITE.mapsUrl}
                   target="_blank"
                   rel="noreferrer"
@@ -215,7 +215,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 function Delivery({ n, title, body }: { n: string; title: string; body: string }) {
   return (
     <div className="bg-carbon p-7 sm:p-9">
-      <span className="font-display text-sm font-extrabold tracking-widest text-brand tnum">{n}</span>
+      <span className="font-display text-sm font-extrabold tracking-widest text-brand-ink tnum">{n}</span>
       <h3 className="mt-3 text-xl font-extrabold">{title}</h3>
       <p className="mt-3 leading-relaxed text-white/65">{body}</p>
     </div>
@@ -248,7 +248,7 @@ function Section({
         <h2 className="text-2xl font-extrabold sm:text-3xl">{title}</h2>
         <Link
           href={href}
-          className="shrink-0 text-sm font-bold text-brand transition-opacity hover:opacity-70"
+          className="shrink-0 text-sm font-bold text-brand-ink transition-opacity hover:opacity-70"
         >
           {linkLabel} →
         </Link>

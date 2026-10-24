@@ -26,10 +26,22 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "hu_HU", siteName: "Oli Felni" },
 };
 
+/**
+ * Applies the theme before first paint. Rendering this after hydration instead would
+ * show a white flash on every load for anyone on the dark theme.
+ */
+const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");
+if(t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches))
+document.documentElement.classList.add("dark")}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hu" className={`${archivo.variable} ${inter.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-white">{children}</body>
+    // The script sets a class the server did not render, so the mismatch is expected.
+    <html lang="hu" className={`${archivo.variable} ${inter.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
+      <body className="flex min-h-full flex-col bg-surface">{children}</body>
     </html>
   );
 }

@@ -62,7 +62,7 @@ export default async function EditListingPage({
         <Link
           href={`/${l.kind === "wheel" ? "felni" : "gumi"}/${l.slug}`}
           target="_blank"
-          className="text-sm font-bold text-brand hover:underline"
+          className="text-sm font-bold text-brand-ink hover:underline"
         >
           Megtekintés az oldalon ↗
         </Link>

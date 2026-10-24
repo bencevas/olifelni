@@ -27,7 +27,7 @@ export function DangerZone({ id }: { id: string }) {
             start(() => { void deleteListing(id); });
           }
         }}
-        className="rounded-lg border border-brand px-5 py-2.5 font-bold text-brand hover:bg-brand/10 disabled:opacity-50"
+        className="rounded-lg border border-brand px-5 py-2.5 font-bold text-brand-ink hover:bg-brand/10 disabled:opacity-50"
       >
         Hirdetés törlése
       </button>

@@ -73,12 +73,12 @@ export default async function AdminListings({
           placeholder="Keresés cím szerint…"
           className="min-w-52 flex-1 rounded-lg border border-rule px-3.5 py-2.5"
         />
-        <select name="tipus" defaultValue={sp.tipus ?? ""} className="rounded-lg border border-rule bg-white px-3 py-2.5">
+        <select name="tipus" defaultValue={sp.tipus ?? ""} className="rounded-lg border border-rule bg-surface px-3 py-2.5">
           <option value="">Minden típus</option>
           <option value="wheel">Felni</option>
           <option value="tire">Gumi</option>
         </select>
-        <select name="statusz" defaultValue={sp.statusz ?? ""} className="rounded-lg border border-rule bg-white px-3 py-2.5">
+        <select name="statusz" defaultValue={sp.statusz ?? ""} className="rounded-lg border border-rule bg-surface px-3 py-2.5">
           <option value="">Minden státusz</option>
           {Object.entries(STATUS_LABEL).map(([v, l]) => (
             <option key={v} value={v}>{l}</option>
@@ -101,7 +101,7 @@ export default async function AdminListings({
               </div>
 
               <div className="min-w-48 flex-1">
-                <Link href={`/admin/${l.id}`} className="font-bold hover:text-brand">
+                <Link href={`/admin/${l.id}`} className="font-bold hover:text-brand-ink">
                   {l.title}
                 </Link>
                 <p className="mt-0.5 text-[13px] text-ink-soft">

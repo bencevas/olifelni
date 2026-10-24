@@ -33,13 +33,13 @@ export function LeadRow({ lead }: { lead: Lead }) {
           </p>
           <p className="mt-0.5 text-sm">
             {lead.phone && (
-              <a href={`tel:${lead.phone.replace(/\s/g, "")}`} className="font-semibold text-brand hover:underline">
+              <a href={`tel:${lead.phone.replace(/\s/g, "")}`} className="font-semibold text-brand-ink hover:underline">
                 {lead.phone}
               </a>
             )}
             {lead.phone && lead.email && <span className="mx-2 text-rule">·</span>}
             {lead.email && (
-              <a href={`mailto:${lead.email}`} className="font-semibold text-brand hover:underline">
+              <a href={`mailto:${lead.email}`} className="font-semibold text-brand-ink hover:underline">
                 {lead.email}
               </a>
             )}

@@ -13,7 +13,7 @@ export function BrowseChips({ title, chips }: { title: string; chips: Chip[] }) 
           <li key={c.href}>
             <Link
               href={c.href}
-              className="inline-flex items-baseline gap-1.5 rounded-full border border-rule bg-white px-4 py-2 text-[14px] font-semibold transition-colors hover:border-ink hover:bg-sheet"
+              className="inline-flex items-baseline gap-1.5 rounded-full border border-rule bg-surface px-4 py-2 text-[14px] font-semibold transition-colors hover:border-ink hover:bg-sheet"
             >
               {c.label}
               <span className="text-[12px] font-normal text-ink-soft">{c.count}</span>

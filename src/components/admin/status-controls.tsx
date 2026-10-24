@@ -21,7 +21,7 @@ export function StatusControls({
     active: "border-green-600 text-green-700 bg-green-50",
     reserved: "border-amber-500 text-amber-700 bg-amber-50",
     sold: "border-ink text-ink bg-sheet",
-    hidden: "border-rule text-ink-soft bg-white",
+    hidden: "border-rule text-ink-soft bg-surface",
   };
 
   return (

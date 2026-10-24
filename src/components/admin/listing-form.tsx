@@ -94,7 +94,7 @@ export function ListingForm({ initial }: { initial: ListingFormValues }) {
               onClick={() => set("kind", k)}
               aria-pressed={v.kind === k}
               className={`rounded-xl border-2 px-4 py-5 text-lg font-bold transition-colors ${
-                v.kind === k ? "border-brand bg-brand/5 text-brand" : "border-rule hover:border-ink"
+                v.kind === k ? "border-brand bg-brand/5 text-brand-ink" : "border-rule hover:border-ink"
               }`}
             >
               {k === "wheel" ? "Felni" : "Gumi"}
@@ -180,7 +180,7 @@ export function ListingForm({ initial }: { initial: ListingFormValues }) {
               <button
                 type="button"
                 onClick={() => { setTitleTouched(false); set("title", ""); }}
-                className="mt-1.5 text-[13px] text-brand hover:underline"
+                className="mt-1.5 text-[13px] text-brand-ink hover:underline"
               >
                 Vissza az automatikus címre: „{suggested}”
               </button>
@@ -236,13 +236,13 @@ export function ListingForm({ initial }: { initial: ListingFormValues }) {
       </Step>
 
       {/* Sticky save bar: on a phone the form is long and the button must always be reachable. */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-rule bg-white/95 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-rule bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 sm:px-6">
           <Link href="/admin" className="rounded-lg border border-rule px-5 py-3 font-bold">
             Mégse
           </Link>
           {state.error && (
-            <p role="alert" className="flex-1 text-sm font-semibold text-brand">{state.error}</p>
+            <p role="alert" className="flex-1 text-sm font-semibold text-brand-ink">{state.error}</p>
           )}
           <SaveButton isNew={!v.id} />
         </div>
@@ -268,7 +268,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   return (
     <section className="border-b border-rule-soft py-8 first:pt-4">
       <h2 className="mb-5 flex items-center gap-3 text-xl font-extrabold">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-sm text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-sm text-surface">
           {n}
         </span>
         {title}
@@ -287,7 +287,7 @@ function Field({
   return (
     <label className="block">
       <span className="mb-1.5 block font-semibold">
-        {label} {required && <span className="text-brand">*</span>}
+        {label} {required && <span className="text-brand-ink">*</span>}
       </span>
       <input
         name={name}
@@ -315,14 +315,14 @@ function Select({
   return (
     <label className="block">
       <span className="mb-1.5 block font-semibold">
-        {label} {required && <span className="text-brand">*</span>}
+        {label} {required && <span className="text-brand-ink">*</span>}
       </span>
       <select
         name={name}
         value={value}
         required={required}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-rule bg-white px-3.5 py-2.5 focus:border-brand focus:outline-none"
+        className="w-full rounded-lg border border-rule bg-surface px-3.5 py-2.5 focus:border-brand focus:outline-none"
       >
         {allowEmpty && <option value="">— válassz —</option>}
         {options.map((o) => (

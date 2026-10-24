@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "./logo";
+import { ThemeToggle } from "./theme-toggle";
 import { NAV, SITE } from "@/lib/site";
 
 export function SiteHeader() {
@@ -15,10 +16,10 @@ export function SiteHeader() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-rule-soft bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-rule-soft bg-surface/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20">
         {/* Mobile: a spacer keeps the logo optically centred against the menu button. */}
-        <span className="w-10 lg:hidden" aria-hidden />
+        <span className="w-20 lg:hidden" aria-hidden />
 
         <Link href="/" onClick={close} className="lg:mr-10">
           <Logo />
@@ -30,7 +31,7 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`relative text-[15px] font-semibold transition-colors hover:text-brand ${
+              className={`relative text-[15px] font-semibold transition-colors hover:text-brand-ink ${
                 isActive(item.href) ? "text-ink" : "text-ink-soft"
               }`}
             >
@@ -43,6 +44,7 @@ export function SiteHeader() {
               )}
             </Link>
           ))}
+          <ThemeToggle className="-mr-1" />
           <a
             href={SITE.phoneHref}
             className="rounded-full bg-brand px-5 py-2.5 text-[15px] font-bold text-white transition-colors hover:bg-brand-dark"
@@ -51,13 +53,15 @@ export function SiteHeader() {
           </a>
         </nav>
 
-        <button
+        <div className="flex items-center lg:hidden">
+          <ThemeToggle />
+          <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Menü bezárása" : "Menü megnyitása"}
-          className="-mr-2 flex h-10 w-10 items-center justify-center lg:hidden"
+          className="-mr-2 flex h-10 w-10 items-center justify-center"
         >
           <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden>
             {open ? (
@@ -66,11 +70,12 @@ export function SiteHeader() {
               <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             )}
           </svg>
-        </button>
+          </button>
+        </div>
       </div>
 
       {open && (
-        <nav id="mobile-nav" className="border-t border-rule-soft bg-white lg:hidden">
+        <nav id="mobile-nav" className="border-t border-rule-soft bg-surface lg:hidden">
           <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
             {NAV.map((item) => (
               <Link
@@ -79,7 +84,7 @@ export function SiteHeader() {
                 onClick={close}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={`block border-b border-rule-soft py-4 text-lg font-bold last:border-0 ${
-                  isActive(item.href) ? "text-brand" : "text-ink"
+                  isActive(item.href) ? "text-brand-ink" : "text-ink"
                 }`}
               >
                 {item.label}

@@ -82,7 +82,7 @@ export function ActiveFilters({
         <button
           type="button"
           onClick={clearAll}
-          className="px-2 py-1 text-[13px] font-semibold text-ink-soft underline-offset-2 hover:text-brand hover:underline"
+          className="px-2 py-1 text-[13px] font-semibold text-ink-soft underline-offset-2 hover:text-brand-ink hover:underline"
         >
           Összes szűrő törlése
         </button>
@@ -99,7 +99,7 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
         type="button"
         onClick={onRemove}
         aria-label={`${label} szűrő eltávolítása`}
-        className="flex h-5 w-5 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-white hover:text-brand"
+        className="flex h-5 w-5 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-surface hover:text-brand-ink"
       >
         <svg viewBox="0 0 14 14" className="h-3 w-3" aria-hidden>
           <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

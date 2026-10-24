@@ -78,7 +78,7 @@ export function PhotoUploader({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={busy}
-          className="rounded-lg bg-ink px-5 py-3 font-bold text-white disabled:opacity-60"
+          className="rounded-lg bg-ink px-5 py-3 font-bold text-surface disabled:opacity-60"
         >
           {busy ? progress || "Feltöltés…" : "+ Fényképek hozzáadása"}
         </button>
@@ -97,7 +97,7 @@ export function PhotoUploader({
       />
 
       {error && (
-        <p role="alert" className="mt-3 rounded-lg bg-brand/10 px-3 py-2 text-sm font-semibold text-brand">
+        <p role="alert" className="mt-3 rounded-lg bg-brand/10 px-3 py-2 text-sm font-semibold text-brand-ink">
           {error}
         </p>
       )}
@@ -162,7 +162,7 @@ function IconButton({
       aria-label={label}
       title={label}
       className={`flex h-8 w-8 items-center justify-center rounded border text-sm font-bold disabled:opacity-30 ${
-        danger ? "border-brand text-brand hover:bg-brand/10" : "border-rule hover:bg-sheet"
+        danger ? "border-brand text-brand-ink hover:bg-brand/10" : "border-rule hover:bg-sheet"
       }`}
     >
       {children}

@@ -46,7 +46,7 @@ export function ListingCardView({ item, priority = false }: { item: Card; priori
       </div>
 
       <div className="mt-3.5">
-        <h3 className="font-display text-[15px] font-bold leading-snug transition-colors group-hover:text-brand">
+        <h3 className="font-display text-[15px] font-bold leading-snug transition-colors group-hover:text-brand-ink">
           {item.title}
         </h3>
         {item.specLine && (
@@ -71,7 +71,7 @@ function EmptyState() {
       <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
         <Link
           href="?"
-          className="rounded-full border border-ink px-7 py-3 font-bold transition-colors hover:bg-white"
+          className="rounded-full border border-ink px-7 py-3 font-bold transition-colors hover:bg-surface"
         >
           Szűrők törlése
         </Link>

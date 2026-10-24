@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div>
           {/* The logo's wordmark is black and would disappear here, so this is set in type. */}
           <p className="font-display text-2xl font-extrabold tracking-tight">
-            OLI<span className="text-brand">FELNI</span>
+            OLI<span className="text-brand-ink">FELNI</span>
           </p>
           <p className="mt-3 max-w-xs leading-relaxed text-white/60">{SITE.tagline}</p>
           <a

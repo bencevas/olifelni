@@ -51,9 +51,9 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-12">
       <nav aria-label="Morzsamenü" className="mb-6 text-sm text-ink-soft">
-        <Link href="/" className="hover:text-brand">Főoldal</Link>
+        <Link href="/" className="hover:text-brand-ink">Főoldal</Link>
         <span className="mx-2">/</span>
-        <Link href={kind === "wheel" ? "/felnik" : "/gumik"} className="hover:text-brand">
+        <Link href={kind === "wheel" ? "/felnik" : "/gumik"} className="hover:text-brand-ink">
           {kind === "wheel" ? "Felnik" : "Gumiabroncsok"}
         </Link>
         <span className="mx-2">/</span>
@@ -65,7 +65,7 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
 
         <div>
           {!available && (
-            <p className="mb-4 inline-block rounded-full bg-ink px-4 py-1.5 text-sm font-bold text-white">
+            <p className="mb-4 inline-block rounded-full bg-ink px-4 py-1.5 text-sm font-bold text-surface">
               {STATUS_LABEL[listing.status]}
             </p>
           )}

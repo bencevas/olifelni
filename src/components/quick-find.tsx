@@ -41,7 +41,7 @@ export function QuickFind({
   return (
     <form
       onSubmit={submit}
-      className="rounded-2xl border border-rule-soft bg-white p-5 shadow-[0_20px_60px_-24px_rgba(13,14,17,0.55)] sm:p-6"
+      className="rounded-2xl border border-rule-soft bg-surface p-5 shadow-[0_20px_60px_-24px_rgba(13,14,17,0.55)] sm:p-6"
     >
       <div className="flex items-baseline justify-between gap-4">
         <h2 className="text-lg font-extrabold">Keresd meg a felnid</h2>
@@ -88,7 +88,7 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-label={label}
-          className="h-[50px] w-full appearance-none rounded-xl border border-rule bg-white pl-3.5 pr-10 text-[15px] font-semibold transition-colors hover:border-ink-soft focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+          className="h-[50px] w-full appearance-none rounded-xl border border-rule bg-surface pl-3.5 pr-10 text-[15px] font-semibold transition-colors hover:border-ink-soft focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         >
           <option value="">Mindegy</option>
           {options.map((o) => (
