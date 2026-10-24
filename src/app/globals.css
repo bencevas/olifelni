@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/*
+ * Tokens lifted from the live Wix site (see .context/migration-plan.md §3.1):
+ * #2B2B2B text, #D22730 brand red, #C9C9C9 rules, white ground.
+ * The grey image backdrop matches the studio sheet the wheels are photographed on.
+ */
+@theme {
+  --color-ink: #2b2b2b;
+  --color-ink-soft: #6b6b6b;
+  --color-brand: #d22730;
+  --color-brand-dark: #b01f27;
+  --color-rule: #c9c9c9;
+  --color-rule-soft: #e6e6e6;
+  --color-sheet: #f1f1f1;
+
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Descriptions are stored as plain text; keep the owner's line breaks. */
+.prose-plain {
+  white-space: pre-line;
+  line-height: 1.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

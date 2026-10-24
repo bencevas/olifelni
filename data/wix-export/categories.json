@@ -1,0 +1,602 @@
+[
+ {
+  "id": "00000000-000000-000000-000000000001",
+  "name": "All Products",
+  "slug": "all-products",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "1b0a02e1-9f3d-ebc7-c741-dd3a2f7577c2",
+  "name": "13\"",
+  "slug": "13\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "4e1642fa-241c-ad3d-99f4-b3601e8c76ce",
+  "name": "14\"",
+  "slug": "14\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "0d9a6cc4-7754-f1ca-0fde-f5e16235539c",
+  "name": "15\"",
+  "slug": "15\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "607975b1-ccbb-6e8a-d7bc-b7bfb486c895",
+  "name": "16\"",
+  "slug": "16\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "ee1ed620-cca2-8654-c111-85ecd2c3b036",
+  "name": "17\"",
+  "slug": "17\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "d1f3be52-3713-608c-f406-ac9fb898289a",
+  "name": "18\"",
+  "slug": "19\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "7d3c5dab-2dc1-23d2-fa70-95e7ca8e7614",
+  "name": "19\"",
+  "slug": "19\"-1",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "b0794e13-42fd-5345-3ac3-038d5a4ad9fe",
+  "name": "20\"",
+  "slug": "20\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "055c3206-a10b-8fa8-e608-246daed1909a",
+  "name": "21\"",
+  "slug": "21\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "a1a72900-d6dc-8f29-2cb9-f55dc34c06f1",
+  "name": "22\"",
+  "slug": "22\"",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "490c98b3-9997-afec-5c0e-3a5ba105d8c7",
+  "name": "4 x 100",
+  "slug": "4x100",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "0b99083a-98ba-549f-7bce-9a3ed19aa78e",
+  "name": "4 x 108",
+  "slug": "4-x-108",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "3050ab6d-bf1a-aa59-e31f-3ba9f4bfd023",
+  "name": "4 x 98",
+  "slug": "4x98",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "93866835-1d05-568f-5922-74dedbe22ae5",
+  "name": "5 x 100",
+  "slug": "5x100",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "7ebfcece-332d-e472-7f53-73ab2f5b0481",
+  "name": "5 x 108",
+  "slug": "5x108",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "08cebfe4-0f4a-232b-97c8-f3bbcdde321b",
+  "name": "5 x 110",
+  "slug": "5x110",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "2676029d-7fd7-7ab2-73e2-835cd377d1fa",
+  "name": "5 x 112",
+  "slug": "5x112",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "60a1159d-8e67-c5b9-d54d-276a9a4a152f",
+  "name": "5 x 114,3",
+  "slug": "5x1143",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "8e31c66b-f577-be51-2fd5-b348c1b978d4",
+  "name": "5 x 115",
+  "slug": "5x115",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "c573bdc6-391e-7f09-6c74-cefc98539c99",
+  "name": "5 x 120",
+  "slug": "5-x-120",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "1fbd550f-7023-df24-9e56-f6aff7c104b1",
+  "name": "5 x 98",
+  "slug": "5x98",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "198c5d90-5d7c-8eb2-430e-18dcbde518f7",
+  "name": "5x130",
+  "slug": "5x130",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "34d71865-cf09-4719-e5eb-7b40dfdbe146",
+  "name": "ABT",
+  "slug": "abt",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "fa1c41c3-aac6-f807-2fdd-184b4004c0dd",
+  "name": "Advanti",
+  "slug": "advanti",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "8e331bdc-d8fc-0733-1383-63394dcf94d4",
+  "name": "AEZ",
+  "slug": "aez",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "f0e4d6e3-2136-236c-b064-7be19010b424",
+  "name": "Alfa Romeo",
+  "slug": "alfa-romeo",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "541e1f17-1dec-60ae-82ea-dc2d8b5b2676",
+  "name": "Alutec",
+  "slug": "alutec",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "1392b952-2027-399e-fb5f-d4d126408e27",
+  "name": "ATS",
+  "slug": "ats",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "0c374f9f-60bb-5028-eb11-760dfc99daa5",
+  "name": "Audi",
+  "slug": "audi",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "206fa8fc-c16b-b4aa-2ca6-47028c2979f5",
+  "name": "BBS",
+  "slug": "bbs",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "a933a5dd-e0a8-287e-ce22-b8da776d74d9",
+  "name": "Bentley",
+  "slug": "bentley",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "0963eef6-e056-f2ee-0721-fd6c1499cf57",
+  "name": "BMW",
+  "slug": "bmw",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "21bb7eb0-e944-e1a2-4b9e-3ba0c516a105",
+  "name": "Borbet",
+  "slug": "borbet",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "65b191b6-d70e-ee93-3bcf-17ce235d06d8",
+  "name": "Breyton",
+  "slug": "breyton",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "af956396-c1ba-0092-7245-e95dabaf749a",
+  "name": "Brock",
+  "slug": "brock",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "a1def108-a702-b149-517f-6600c13ffad8",
+  "name": "Citroen",
+  "slug": "citroen",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "030c35ef-bcc2-57d4-4558-1113a78407a8",
+  "name": "Cupra",
+  "slug": "cupra",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "bcee0e64-68cd-6fea-59c8-39bd7bcc5c2e",
+  "name": "Dezent",
+  "slug": "dezent",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "d9bacfa2-63e7-9292-24b8-9dd81a11ffdf",
+  "name": "Felnik",
+  "slug": "felnik",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "c7c737ab-45ca-8203-29f1-719cbe2c59db",
+  "name": "Fiat",
+  "slug": "fiat",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "c6cfdedf-266b-642a-32e4-756dbe64b475",
+  "name": "Ford",
+  "slug": "ford",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "55a7e99d-0d13-9daf-e820-f235ef100ad5",
+  "name": "Gumiabrocs",
+  "slug": "gumiabrocs",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "5515d541-b052-baca-2491-6797948ac384",
+  "name": "Honda",
+  "slug": "honda",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "97e9ff9a-2d2d-5b4d-3f18-bbbfcea02043",
+  "name": "Hyundai",
+  "slug": "hyundai",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "caae1696-3334-7384-0501-d5fc1953f2c0",
+  "name": "Jaguar",
+  "slug": "jaguar",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "f785f64e-edd2-95e3-64bb-0879ce223f36",
+  "name": "Japan Racing",
+  "slug": "japan-racing",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "19b3802f-1ea7-90db-1cc5-0dc5a884b8d5",
+  "name": "Jeep",
+  "slug": "jeep",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "503c55e3-5086-00ef-08fc-4d80edaaeed7",
+  "name": "Kia",
+  "slug": "kia",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "90e202f0-73a5-c627-02cc-8a739db315de",
+  "name": "Land Rover",
+  "slug": "land-rover",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "9152efd2-1f74-b0a1-c96f-8258a0b900ac",
+  "name": "Mazda",
+  "slug": "mazda",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "7d5868b3-c6df-1c77-0957-d48a32533d04",
+  "name": "Mercedes Benz",
+  "slug": "mercedes-benz",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "d865b6a9-aa0f-905a-aa38-c0010dca69c2",
+  "name": "MINI",
+  "slug": "mini",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "835d6a60-2786-2302-8707-54f79cfaa1e4",
+  "name": "Mitsubishi",
+  "slug": "mitsubishi",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "0181d571-a988-43dc-000f-174bab73bc9a",
+  "name": "Nissan",
+  "slug": "nissan",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "17394c3b-cc1b-5ef8-6fc3-f2af260709fc",
+  "name": "Nyári",
+  "slug": "nyári",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "5d22f6a5-810b-4794-8ce3-0cfd4ae369cc",
+  "name": "Négy évszakos",
+  "slug": "négy-évszakos",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "6d71cb7d-ae86-f251-5837-7ee1936dbb2e",
+  "name": "Opel",
+  "slug": "opel",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "65867311-2630-912b-6102-e679127bc678",
+  "name": "OZ",
+  "slug": "untitled-oz",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "043a2d68-ffef-5256-1348-9c0b23feceb8",
+  "name": "OZ Racing",
+  "slug": "oz-racing",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "785816eb-349c-6b47-9ffb-6fdd1b3408c0",
+  "name": "Peugeot",
+  "slug": "peugeot",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "5526c2b4-6815-d8c9-051c-737e19cbe812",
+  "name": "Pirelli",
+  "slug": "pirelli",
+  "visible": false,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "42ef734f-ae8a-3328-5b14-4dd8af87c433",
+  "name": "Porsche",
+  "slug": "porsche",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "dda9a0e9-2210-abad-a999-bd6b4e2f5d4c",
+  "name": "Renault",
+  "slug": "renault",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "d520925c-dd6d-444e-84d0-a241e5e3cc9a",
+  "name": "Ronal",
+  "slug": "ronal",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "aa82d234-4b2e-1050-61c7-d2e904f7d809",
+  "name": "Seat",
+  "slug": "seat",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "8e813cd8-fea7-7c03-a7e6-e452e1f3f2c6",
+  "name": "Skoda",
+  "slug": "skoda",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "c2e5fb1e-d379-f9fc-835d-8f32ed09d404",
+  "name": "Smart",
+  "slug": "smart",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "e3d2c1fd-0f88-ee2c-60ba-067b463f9fb0",
+  "name": "Suzuki",
+  "slug": "suzuki",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "6cecdd8e-ab35-66e0-c260-813dd9aa93c9",
+  "name": "TEC",
+  "slug": "tec",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "6d8306f3-d936-0cde-f085-49367b600a78",
+  "name": "Tesla",
+  "slug": "tesla",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "fc59b06f-8c02-2cf7-f536-6261089ad84a",
+  "name": "Toyota",
+  "slug": "toyota",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "35b59676-76c9-b5e8-ea61-207bdff28070",
+  "name": "Téli",
+  "slug": "téli",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "52bfc9fb-d7c9-e245-b21e-0fae2ca20a26",
+  "name": "Volkswagen",
+  "slug": "volkswagen",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ },
+ {
+  "id": "bce73f0d-4a36-de2f-0565-2d7ff48a3c52",
+  "name": "Volvo",
+  "slug": "volvo",
+  "visible": true,
+  "parentCategoryId": null,
+  "parentCategoryIndex": null
+ }
+]
