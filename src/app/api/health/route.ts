@@ -23,10 +23,18 @@ function endpoint(url: string | undefined): { host: string; port: string } | nul
  * direct URL does not fail — it hangs until the function is killed. That looks identical
  * to an outage, so it is worth naming explicitly.
  */
+const POOLER_FIX =
+  'Use the "Transaction pooler" string instead: Supabase -> Project Settings -> Database -> Connection string -> Transaction pooler. The host looks like aws-0-<region>.pooler.supabase.com and the port is 6543.';
+
 function diagnose(ep: { host: string; port: string } | null): string | null {
   if (!ep) return null;
   if (/^db\.[a-z0-9]+\.supabase\.co$/i.test(ep.host)) {
-    return `DATABASE_URL points at Supabase's direct connection (${ep.host}). That host is IPv6-only and Vercel cannot reach it, so connections hang rather than fail. Use the "Transaction pooler" string instead — Supabase → Project Settings → Database → Connection string → Transaction pooler. The host looks like aws-0-<region>.pooler.supabase.com and the port is 6543.`;
+    return `DATABASE_URL points at Supabase's direct connection (${ep.host}). That host is IPv6-only and Vercel cannot reach it, so connections hang rather than fail. ${POOLER_FIX}`;
+  }
+  // The project API hostname has no "db." prefix and serves HTTPS via Cloudflare — it
+  // does not run Postgres at all, so a database port there is dropped and hangs.
+  if (/^[a-z0-9]+\.supabase\.co$/i.test(ep.host)) {
+    return `DATABASE_URL points at ${ep.host}, which is the project's API hostname (the value of SUPABASE_URL), not a database host. It serves HTTPS and does not accept Postgres connections, so they hang. ${POOLER_FIX}`;
   }
   if (ep.host.includes("pooler.supabase.com") && ep.port !== "6543") {
     return `DATABASE_URL uses the pooler host but port ${ep.port}. Serverless needs the transaction pooler on port 6543.`;
