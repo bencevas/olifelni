@@ -87,13 +87,19 @@ export async function CatalogPage({
   const sp = toSearchParams(raw);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-14">
-      <header className="mb-8">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1>
-        {intro && <p className="mt-2 max-w-2xl text-ink-soft">{intro}</p>}
+    <>
+      <header className="bg-carbon text-white">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-14">
+          <p className="flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.18em] text-white/55">
+            <span className="h-px w-7 bg-brand" aria-hidden />
+            Készlet
+          </p>
+          <h1 className="mt-4 text-4xl font-extrabold sm:text-5xl">{title}</h1>
+          {intro && <p className="mt-3 max-w-3xl text-[17px] leading-relaxed text-white/65">{intro}</p>}
+        </div>
       </header>
 
-      <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[250px_1fr] lg:gap-12 lg:py-14">
         <Filters groups={groups} priceBounds={bounds} />
 
         <div className="mt-6 lg:mt-0">
@@ -109,7 +115,7 @@ export async function CatalogPage({
           </Suspense>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

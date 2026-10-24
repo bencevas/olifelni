@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
 
-const nunito = Nunito({
-  variable: "--font-nunito",
-  subsets: ["latin", "latin-ext"], // latin-ext carries ő and ű
-  weight: ["400", "600", "700", "800", "900"],
+// latin-ext carries ő and ű.
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "latin-ext"],
   display: "swap",
 });
 
@@ -22,8 +28,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hu" className={`${nunito.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang="hu" className={`${archivo.variable} ${inter.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-white">{children}</body>
     </html>
   );
 }

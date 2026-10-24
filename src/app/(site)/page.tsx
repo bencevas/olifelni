@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ListingGrid } from "@/components/listing-card";
 import { LeadForm } from "@/components/lead-form";
@@ -41,51 +42,80 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="border-b border-rule-soft bg-sheet">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:grid lg:grid-cols-[1fr_minmax(0,400px)] lg:items-center lg:gap-14 lg:py-16">
-          <div>
-            <h1 className="text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]">
-              Gyári alufelnik és gumiabroncsok,
-              <span className="text-brand"> jó áron.</span>
-            </h1>
-            <p className="mt-5 max-w-lg text-lg text-ink-soft">
-              Komplett szettek 13-tól 22 colig. Országos szállítás, személyes átvétel
-              Szegeden.
+      <section className="relative isolate overflow-hidden bg-carbon">
+        <Image
+          src="/hero-garage.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[62%_58%]"
+        />
+        {/* Mobile text runs the full width, so it needs a flat scrim; on wider screens the
+            gradient clears the right half and leaves the wheels visible. */}
+        <div className="absolute inset-0 bg-carbon/75 sm:hidden" aria-hidden />
+        <div
+          className="absolute inset-0 hidden sm:block sm:bg-gradient-to-r sm:from-carbon sm:via-carbon/88 sm:to-carbon/20"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-carbon to-transparent"
+          aria-hidden
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 lg:pb-32 lg:pt-28">
+          <div className="max-w-2xl">
+            <p className="flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.18em] text-white/70">
+              <span className="h-px w-7 bg-brand" aria-hidden />
+              Alufelni &amp; gumiabroncs · Szeged
             </p>
 
-            <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2.5 text-[15px] font-semibold">
-              <Fact>{wheels.total + tires.total} szett készleten</Fact>
-              <Fact>Országos szállítás</Fact>
-              <Fact>Beszámítás lehetséges</Fact>
-            </ul>
+            <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.03] text-white sm:text-6xl lg:text-[4.1rem]">
+              Gyári alufelnik
+              <br />
+              <span className="text-brand">jó áron.</span>
+            </h1>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/75">
+              Komplett szettek 13-tól 22 colig, téli és nyári gumikkal. Országos
+              szállítás, személyes átvétel Szegeden.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/felnik"
-                className="rounded-full bg-brand px-7 py-3.5 text-center font-bold text-white transition-colors hover:bg-brand-dark"
+                className="rounded-full bg-brand px-8 py-4 text-center font-bold text-white transition-colors hover:bg-brand-dark"
               >
                 Felnik böngészése
               </Link>
               <a
                 href={SITE.phoneHref}
-                className="rounded-full border border-ink px-7 py-3.5 text-center font-bold transition-colors hover:bg-white"
+                className="rounded-full border border-white/30 px-8 py-4 text-center font-bold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-carbon"
               >
                 {SITE.phone}
               </a>
             </div>
-          </div>
 
-          <div className="mt-10 lg:mt-0">
-            <QuickFind
-              makes={makes.map((o) => ({ ...o, label: o.value }))}
-              diameters={diameterOptions}
-              bolts={bolts.map((o) => ({ ...o, label: o.value }))}
-            />
+            <dl className="mt-11 grid grid-cols-3 gap-4 border-t border-white/15 pt-7 sm:flex sm:gap-x-12">
+              <Stat value={`${wheels.total + tires.total}`} label="szett készleten" />
+              <Stat value="13–22″" label="átmérő" />
+              <Stat value="Országos" label="szállítás" />
+            </dl>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl space-y-8 px-4 py-10 sm:px-6">
+      {/* Lifted over the hero's edge: the search is the main action, so it should not be
+          something you scroll to find. */}
+      <div className="relative z-10 mx-auto -mt-12 max-w-7xl px-4 sm:px-6 lg:-mt-14">
+        <QuickFind
+          makes={makes.map((o) => ({ ...o, label: o.value }))}
+          diameters={diameterOptions}
+          bolts={bolts.map((o) => ({ ...o, label: o.value }))}
+        />
+      </div>
+
+      <section className="mx-auto max-w-7xl space-y-7 px-4 py-14 sm:px-6">
         <BrowseChips title="Népszerű márkák" chips={makeChips} />
         <BrowseChips title="Átmérő szerint" chips={sizeChips} />
       </section>
@@ -98,89 +128,106 @@ export default async function HomePage() {
         <ListingGrid items={tires.items.slice(0, 4)} />
       </Section>
 
-      {/* The red shipping block, carried over from the current site. */}
-      <section className="mt-20 bg-brand text-white">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:py-20">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Szállítás</h2>
-          <div className="mt-10 grid gap-10 md:grid-cols-2">
-            <div>
-              <h3 className="text-xl font-extrabold">1. Személyes átadás</h3>
-              <p className="mt-3 leading-relaxed text-white/90">
-                Országszerte, heti rendszerességgel szállítunk felniket és gumikat
-                ügyfeleinkkel egyeztetett időpontban és helyszínen. Amennyiben felpróbálnád,
-                személyesen megtekintenéd, vagy beszámíttatnád meglévő felnidet, a személyes
-                átadás lehet a legjobb megoldás.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-extrabold">2. Futárszolgálat</h3>
-              <p className="mt-3 leading-relaxed text-white/90">
-                Ha nem tudsz várni a következő szállításra, futárral is feladjuk a csomagot.
-                A szállítási díjról és a várható időpontról telefonon egyeztetünk.
-              </p>
-              <a
-                href={SITE.phoneHref}
-                className="mt-6 inline-block rounded-full bg-white px-7 py-3.5 font-bold text-brand transition-opacity hover:opacity-90"
-              >
-                {SITE.phone}
-              </a>
-            </div>
+      <section className="mt-24 bg-carbon text-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
+          <p className="flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.18em] text-white/60">
+            <span className="h-px w-7 bg-brand" aria-hidden />
+            Átvétel
+          </p>
+          <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Hogyan jut el hozzád?</h2>
+
+          <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-carbon-line bg-carbon-line md:grid-cols-2">
+            <Delivery
+              n="01"
+              title="Személyes átadás"
+              body="Országszerte, heti rendszerességgel szállítunk felniket és gumikat ügyfeleinkkel egyeztetett időpontban és helyszínen. Amennyiben felpróbálnád, személyesen megtekintenéd, vagy beszámíttatnád meglévő felnidet, a személyes átadás lehet a legjobb megoldás."
+            />
+            <Delivery
+              n="02"
+              title="Futárszolgálat"
+              body="Ha nem tudsz várni a következő szállításra, futárral is feladjuk a csomagot. A szállítási díjról és a várható időpontról telefonon egyeztetünk."
+            />
           </div>
+
+          <a
+            href={SITE.phoneHref}
+            className="mt-10 inline-flex rounded-full bg-brand px-8 py-4 font-bold text-white transition-colors hover:bg-brand-dark"
+          >
+            Egyeztetek telefonon — {SITE.phone}
+          </a>
         </div>
       </section>
 
-      <section id="kapcsolat" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-2">
+      <section id="kapcsolat" className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Kérdésed van?</h2>
-            <p className="mt-3 max-w-md text-ink-soft">
+            <h2 className="text-3xl font-extrabold sm:text-4xl">Kérdésed van?</h2>
+            <p className="mt-3 max-w-md text-lg text-ink-soft">
               Írj nekünk, és egy munkanapon belül válaszolunk. Ha sürgős, hívj bátran.
             </p>
-            <dl className="mt-8 space-y-4 text-[15px]">
-              <div>
-                <dt className="font-bold">Telefon</dt>
-                <dd>
-                  <a className="text-brand hover:underline" href={SITE.phoneHref}>
-                    {SITE.phone}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="font-bold">E-mail</dt>
-                <dd>
-                  <a className="text-brand hover:underline" href={`mailto:${SITE.email}`}>
-                    {SITE.email}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="font-bold">Cím</dt>
-                <dd className="text-ink-soft">{SITE.address}</dd>
-              </div>
+            <dl className="mt-9 space-y-5">
+              <Contact label="Telefon">
+                <a className="text-lg font-bold text-brand hover:underline" href={SITE.phoneHref}>
+                  {SITE.phone}
+                </a>
+              </Contact>
+              <Contact label="E-mail">
+                <a className="font-semibold hover:text-brand" href={`mailto:${SITE.email}`}>
+                  {SITE.email}
+                </a>
+              </Contact>
+              <Contact label="Cím">
+                <a
+                  className="font-semibold hover:text-brand"
+                  href={SITE.mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {SITE.address}
+                </a>
+              </Contact>
             </dl>
           </div>
-          <LeadForm />
+
+          <div className="rounded-2xl border border-rule-soft bg-sheet p-6 sm:p-8">
+            <LeadForm />
+          </div>
         </div>
       </section>
     </>
   );
 }
 
-function Fact({ children }: { children: React.ReactNode }) {
+function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <li className="flex items-center gap-2">
-      <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0 text-brand" aria-hidden>
-        <path
-          d="M4 10.5l4 4 8-9"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      {children}
-    </li>
+    <div>
+      <dt className="sr-only">{label}</dt>
+      <dd>
+        <span className="block font-display text-[1.4rem] font-extrabold tracking-tight text-white tnum sm:text-3xl">
+          {value}
+        </span>
+        <span className="mt-0.5 block text-[13px] text-white/60 sm:text-sm">{label}</span>
+      </dd>
+    </div>
+  );
+}
+
+function Delivery({ n, title, body }: { n: string; title: string; body: string }) {
+  return (
+    <div className="bg-carbon p-7 sm:p-9">
+      <span className="font-display text-sm font-extrabold tracking-widest text-brand tnum">{n}</span>
+      <h3 className="mt-3 text-xl font-extrabold">{title}</h3>
+      <p className="mt-3 leading-relaxed text-white/65">{body}</p>
+    </div>
+  );
+}
+
+function Contact({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="border-b border-rule-soft pb-4 last:border-0">
+      <dt className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink-soft">{label}</dt>
+      <dd className="mt-1.5">{children}</dd>
+    </div>
   );
 }
 
@@ -196,10 +243,13 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
-      <div className="mb-7 flex items-baseline justify-between gap-4">
-        <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{title}</h2>
-        <Link href={href} className="shrink-0 text-sm font-bold text-brand hover:underline">
+    <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+      <div className="mb-8 flex items-baseline justify-between gap-4 border-b border-rule-soft pb-4">
+        <h2 className="text-2xl font-extrabold sm:text-3xl">{title}</h2>
+        <Link
+          href={href}
+          className="shrink-0 text-sm font-bold text-brand transition-opacity hover:opacity-70"
+        >
           {linkLabel} →
         </Link>
       </div>

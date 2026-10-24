@@ -38,61 +38,57 @@ export function QuickFind({
     router.push(sp.toString() ? `/felnik?${sp}` : "/felnik");
   }
 
-  const field =
-    "w-full appearance-none rounded-lg border border-rule bg-white px-3.5 py-3 text-[15px] font-semibold focus:border-brand focus:outline-none";
-
   return (
     <form
       onSubmit={submit}
-      className="rounded-2xl border border-rule-soft bg-white p-5 shadow-sm sm:p-6"
+      className="rounded-2xl border border-rule-soft bg-white p-5 shadow-[0_20px_60px_-24px_rgba(13,14,17,0.55)] sm:p-6"
     >
-      <h2 className="text-lg font-extrabold">Keresd meg a felnid</h2>
-      <p className="mt-1 text-[13px] text-ink-soft">
-        Elég egy mezőt kitölteni — a többit szűkítheted a találati oldalon.
-      </p>
-
-      <div className="mt-4 space-y-3">
-        <Select label="Autó márka" value={make} onChange={setMake} options={makes} />
-        <div className="grid grid-cols-2 gap-3">
-          <Select label="Átmérő" value={diameter} onChange={setDiameter} options={diameters} />
-          <Select label="Osztókör" value={bolt} onChange={setBolt} options={bolts} />
-        </div>
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 className="text-lg font-extrabold">Keresd meg a felnid</h2>
+        <p className="hidden text-[13px] text-ink-soft sm:block">
+          Elég egy mezőt kitölteni
+        </p>
       </div>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="mt-4 w-full rounded-lg bg-brand px-6 py-3.5 font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60"
-      >
-        {pending ? "Keresés…" : "Mutasd a felniket"}
-      </button>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end lg:gap-4">
+        <Field label="Autó márka" value={make} onChange={setMake} options={makes} />
+        <Field label="Átmérő" value={diameter} onChange={setDiameter} options={diameters} />
+        <Field label="Osztókör" value={bolt} onChange={setBolt} options={bolts} />
 
-      <p className="mt-3 text-center text-[13px] text-ink-soft">
-        Nem találod? <span className="font-semibold text-ink">Hívj minket</span>, és
-        megkeressük.
-      </p>
+        <button
+          type="submit"
+          disabled={pending}
+          className="h-[50px] rounded-xl bg-brand px-8 font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60 sm:col-span-2 lg:col-span-1"
+        >
+          {pending ? "Keresés…" : "Mutasd"}
+        </button>
+      </div>
     </form>
   );
+}
 
-  function Select({
-    label,
-    value,
-    onChange,
-    options,
-  }: {
-    label: string;
-    value: string;
-    onChange: (v: string) => void;
-    options: Option[];
-  }) {
-    return (
-      <label className="block">
-        <span className="mb-1.5 block text-[13px] font-semibold text-ink-soft">{label}</span>
+function Field({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: Option[];
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 block text-[12px] font-bold uppercase tracking-[0.12em] text-ink-soft">
+        {label}
+      </span>
+      <div className="relative">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={field}
           aria-label={label}
+          className="h-[50px] w-full appearance-none rounded-xl border border-rule bg-white pl-3.5 pr-10 text-[15px] font-semibold transition-colors hover:border-ink-soft focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         >
           <option value="">Mindegy</option>
           {options.map((o) => (
@@ -101,7 +97,22 @@ export function QuickFind({
             </option>
           ))}
         </select>
-      </label>
-    );
-  }
+        {/* appearance-none drops the native arrow, so the control needs its own. */}
+        <svg
+          viewBox="0 0 20 20"
+          className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
+          aria-hidden
+        >
+          <path
+            d="M5 8l5 5 5-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </label>
+  );
 }

@@ -70,15 +70,28 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
             </p>
           )}
 
-          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{listing.title}</h1>
-          <p className="mt-3 text-2xl font-semibold">{huf(listing.priceHuf)}</p>
+          <h1 className="text-3xl font-extrabold sm:text-[2.6rem] sm:leading-[1.08]">
+            {listing.title}
+          </h1>
+
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <p className="font-display text-3xl font-extrabold tracking-tight tnum sm:text-4xl">
+              {huf(listing.priceHuf)}
+            </p>
+            {available && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-sheet px-3 py-1 text-[13px] font-semibold text-ink-soft">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
+                Készleten
+              </span>
+            )}
+          </div>
 
           {rows.length > 0 && (
-            <dl className="mt-7 grid grid-cols-2 gap-x-6 border-y border-rule-soft py-5 text-[15px]">
+            <dl className="mt-8 grid grid-cols-2 gap-x-8 border-y border-rule-soft py-5 text-[15px]">
               {rows.map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-3 py-1.5">
+                <div key={k} className="flex justify-between gap-3 border-b border-rule-soft/60 py-2 last:border-0">
                   <dt className="text-ink-soft">{k}</dt>
-                  <dd className="text-right font-semibold">{v}</dd>
+                  <dd className="text-right font-semibold tnum">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -89,7 +102,7 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
           )}
 
           {/* The old site had no call to action at all — this is the whole point of the page. */}
-          <div className="mt-8 rounded-xl border border-rule bg-sheet p-5 sm:p-6">
+          <div className="mt-9 rounded-2xl border border-rule-soft bg-sheet p-5 sm:p-6">
             <p className="text-lg font-extrabold">
               {available ? "Érdekel ez a szett?" : "Hasonlót keresel?"}
             </p>
@@ -98,7 +111,7 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
             </p>
             <a
               href={SITE.phoneHref}
-              className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3.5 text-lg font-bold text-white transition-colors hover:bg-brand-dark"
+              className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-lg font-bold text-white transition-colors hover:bg-brand-dark"
             >
               {SITE.phone}
             </a>
@@ -111,7 +124,7 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
 
       {related.length > 0 && (
         <section className="mt-20">
-          <h2 className="mb-6 text-2xl font-extrabold tracking-tight">Hasonló hirdetések</h2>
+          <h2 className="mb-7 border-b border-rule-soft pb-4 text-2xl font-extrabold sm:text-3xl">Hasonló hirdetések</h2>
           <ListingGrid items={related} />
         </section>
       )}

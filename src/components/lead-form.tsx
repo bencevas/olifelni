@@ -11,7 +11,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-lg bg-brand px-6 py-3.5 font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60"
+      className="w-full rounded-xl bg-brand px-6 py-4 font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60"
     >
       {pending ? "Küldés…" : "Üzenet küldése"}
     </button>
@@ -31,7 +31,7 @@ export function LeadForm({
 
   if (state.ok) {
     return (
-      <div className="rounded-lg border border-rule bg-sheet p-6 text-center">
+      <div className="rounded-2xl border border-rule-soft bg-white p-8 text-center">
         <p className="text-lg font-extrabold">Köszönjük, megkaptuk!</p>
         <p className="mt-1.5 text-ink-soft">
           Hamarosan keresünk. Ha sürgős, hívj minket:{" "}
@@ -41,7 +41,8 @@ export function LeadForm({
     );
   }
 
-  const field = "w-full rounded-lg border border-rule px-3.5 py-2.5 text-[15px] focus:border-brand focus:outline-none";
+  const field =
+    "w-full rounded-xl border border-rule bg-white px-3.5 py-3 text-[15px] transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
 
   return (
     <form action={action} className="space-y-3">
@@ -56,22 +57,22 @@ export function LeadForm({
 
       <div className={compact ? "space-y-3" : "grid gap-3 sm:grid-cols-2"}>
         <label className="block">
-          <span className="mb-1 block text-sm font-semibold">Név *</span>
+          <span className="mb-1.5 block text-[13px] font-semibold text-ink-soft">Név *</span>
           <input name="name" required autoComplete="name" className={field} />
         </label>
         <label className="block">
-          <span className="mb-1 block text-sm font-semibold">Telefonszám</span>
+          <span className="mb-1.5 block text-[13px] font-semibold text-ink-soft">Telefonszám</span>
           <input name="phone" type="tel" autoComplete="tel" inputMode="tel" className={field} />
         </label>
       </div>
 
       <label className="block">
-        <span className="mb-1 block text-sm font-semibold">E-mail</span>
+        <span className="mb-1.5 block text-[13px] font-semibold text-ink-soft">E-mail</span>
         <input name="email" type="email" autoComplete="email" className={field} />
       </label>
 
       <label className="block">
-        <span className="mb-1 block text-sm font-semibold">Üzenet</span>
+        <span className="mb-1.5 block text-[13px] font-semibold text-ink-soft">Üzenet</span>
         <textarea
           name="message"
           rows={compact ? 3 : 4}

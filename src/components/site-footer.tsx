@@ -3,37 +3,68 @@ import { NAV, SITE } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 border-t border-rule-soft bg-sheet">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
+    <footer className="mt-24 bg-carbon text-white">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <p className="text-lg font-extrabold">{SITE.name}</p>
-          <p className="mt-2 text-sm text-ink-soft">{SITE.tagline}</p>
+          {/* The logo's wordmark is black and would disappear here, so this is set in type. */}
+          <p className="font-display text-2xl font-extrabold tracking-tight">
+            OLI<span className="text-brand">FELNI</span>
+          </p>
+          <p className="mt-3 max-w-xs leading-relaxed text-white/60">{SITE.tagline}</p>
+          <a
+            href={SITE.phoneHref}
+            className="mt-6 inline-flex rounded-full bg-brand px-6 py-3 font-bold text-white transition-colors hover:bg-brand-dark"
+          >
+            {SITE.phone}
+          </a>
         </div>
 
-        <div className="text-sm">
-          <p className="font-bold">Elérhetőség</p>
-          <ul className="mt-2 space-y-1.5 text-ink-soft">
-            <li><a className="hover:text-brand" href={SITE.phoneHref}>{SITE.phone}</a></li>
-            <li><a className="hover:text-brand" href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-            <li>{SITE.address}</li>
+        <div>
+          <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-white/45">
+            Elérhetőség
+          </p>
+          <ul className="mt-4 space-y-2.5 text-white/70">
+            <li>
+              <a className="transition-colors hover:text-white" href={SITE.phoneHref}>
+                {SITE.phone}
+              </a>
+            </li>
+            <li>
+              <a className="transition-colors hover:text-white" href={`mailto:${SITE.email}`}>
+                {SITE.email}
+              </a>
+            </li>
+            <li>
+              <a
+                className="transition-colors hover:text-white"
+                href={SITE.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {SITE.address}
+              </a>
+            </li>
           </ul>
         </div>
 
-        <div className="text-sm">
-          <p className="font-bold">Oldalak</p>
-          <ul className="mt-2 space-y-1.5 text-ink-soft">
+        <div>
+          <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-white/45">Oldalak</p>
+          <ul className="mt-4 space-y-2.5 text-white/70">
             {NAV.map((i) => (
               <li key={i.href}>
-                <Link className="hover:text-brand" href={i.href}>{i.label}</Link>
+                <Link className="transition-colors hover:text-white" href={i.href}>
+                  {i.label}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-rule-soft">
-        <p className="mx-auto max-w-7xl px-4 pb-24 pt-5 text-center text-sm text-ink-soft sm:px-6 lg:pb-5">
-          <span className="font-bold text-ink">{SITE.legalName}</span> — Minden jog fenntartva{" "}
+      <div className="border-t border-carbon-line">
+        <p className="mx-auto max-w-7xl px-4 pb-24 pt-6 text-center text-sm text-white/45 sm:px-6 lg:pb-6">
+          <span className="font-semibold text-white/70">{SITE.legalName}</span> — Minden jog
+          fenntartva{" "}
           {/* The Wix footer was hardcoded to 2024 and went stale. */}
           {new Date().getFullYear()}
         </p>

@@ -89,7 +89,7 @@ export function Filters({
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-rule py-3 text-[15px] font-bold"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-rule py-3.5 text-[15px] font-bold transition-colors hover:border-ink"
         >
           Szűrő
           {activeCount > 0 && (
@@ -127,15 +127,24 @@ export function Filters({
       </div>
 
       <aside className="hidden lg:block">
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-xl font-extrabold">Szűrés</h2>
-          {activeCount > 0 && (
-            <button type="button" onClick={clearAll} className="text-sm text-brand hover:underline">
-              Törlés
-            </button>
-          )}
+        {/* Sticky so the filters stay reachable down a 121-result list. */}
+        <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink-soft">
+              Szűrés
+            </h2>
+            {activeCount > 0 && (
+              <button
+                type="button"
+                onClick={clearAll}
+                className="text-sm font-semibold text-brand hover:underline"
+              >
+                Törlés
+              </button>
+            )}
+          </div>
+          <div className="mt-3 border-t border-rule">{body}</div>
         </div>
-        <div className="mt-3 border-t border-rule">{body}</div>
       </aside>
     </>
   );

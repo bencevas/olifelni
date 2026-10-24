@@ -10,7 +10,7 @@ function Submit() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-lg bg-brand px-6 py-3.5 font-bold text-white disabled:opacity-60"
+      className="w-full rounded-xl bg-brand px-6 py-3.5 font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60"
     >
       {pending ? "Belépés…" : "Belépés"}
     </button>
@@ -20,7 +20,7 @@ function Submit() {
 export function LoginForm() {
   const [state, action] = useActionState<LoginState, FormData>(loginAction, {});
   const field =
-    "w-full rounded-lg border border-rule px-3.5 py-3 focus:border-brand focus:outline-none";
+    "w-full rounded-xl border border-rule px-3.5 py-3 transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
 
   return (
     <form action={action} className="space-y-4">
@@ -35,7 +35,7 @@ export function LoginForm() {
         />
       </label>
       {state.error && (
-        <p role="alert" className="rounded-lg bg-brand/10 px-3.5 py-2.5 text-sm font-semibold text-brand">
+        <p role="alert" className="rounded-xl bg-brand/10 px-3.5 py-2.5 text-sm font-semibold text-brand">
           {state.error}
         </p>
       )}

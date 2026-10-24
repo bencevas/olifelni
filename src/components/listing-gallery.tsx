@@ -14,7 +14,7 @@ export function ListingGallery({ images }: { images: GalleryImage[] }) {
 
   if (!images.length) {
     return (
-      <div className="flex aspect-square items-center justify-center rounded-lg bg-sheet text-ink-soft">
+      <div className="flex aspect-square items-center justify-center rounded-xl bg-sheet text-ink-soft">
         Nincs kép
       </div>
     );
@@ -25,7 +25,7 @@ export function ListingGallery({ images }: { images: GalleryImage[] }) {
       {/* Mobile carousel */}
       <div className="lg:hidden">
         <div
-          className="flex snap-x snap-mandatory gap-2 overflow-x-auto rounded-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory gap-2 overflow-x-auto rounded-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onScroll={(e) => {
             const el = e.currentTarget;
             setActive(Math.round(el.scrollLeft / el.clientWidth));
@@ -68,7 +68,7 @@ export function ListingGallery({ images }: { images: GalleryImage[] }) {
                 onClick={() => setActive(i)}
                 aria-label={`${i + 1}. kép megtekintése`}
                 aria-current={i === active}
-                className={`relative aspect-square overflow-hidden rounded border-2 bg-sheet transition-colors ${
+                className={`relative aspect-square overflow-hidden rounded-lg border-2 bg-sheet transition-colors ${
                   i === active ? "border-brand" : "border-transparent hover:border-rule"
                 }`}
               >
@@ -77,7 +77,7 @@ export function ListingGallery({ images }: { images: GalleryImage[] }) {
             ))}
           </div>
         )}
-        <div className="relative aspect-[4/5] flex-1 overflow-hidden rounded-lg bg-sheet">
+        <div className="relative aspect-[4/5] flex-1 overflow-hidden rounded-xl bg-sheet ring-1 ring-rule-soft">
           <Image
             src={images[active].url}
             alt={images[active].alt}

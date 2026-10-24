@@ -24,17 +24,23 @@ export function SiteHeader() {
           <Logo />
         </Link>
 
-        <nav className="hidden flex-1 items-center justify-end gap-10 lg:flex">
+        <nav className="hidden flex-1 items-center justify-end gap-9 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`text-[15px] font-bold transition-colors hover:text-brand ${
-                isActive(item.href) ? "text-brand" : "text-ink"
+              className={`relative text-[15px] font-semibold transition-colors hover:text-brand ${
+                isActive(item.href) ? "text-ink" : "text-ink-soft"
               }`}
             >
               {item.label}
+              {isActive(item.href) && (
+                <span
+                  className="absolute -bottom-1.5 left-0 h-[2px] w-full rounded-full bg-brand"
+                  aria-hidden
+                />
+              )}
             </Link>
           ))}
           <a
@@ -82,7 +88,7 @@ export function SiteHeader() {
             <a
               href={SITE.phoneHref}
               onClick={close}
-              className="my-4 block rounded-full bg-brand px-5 py-3.5 text-center text-lg font-bold text-white"
+              className="my-4 block rounded-full bg-brand px-5 py-4 text-center text-lg font-bold text-white"
             >
               {SITE.phone}
             </a>
