@@ -57,6 +57,12 @@ data/wix-export/     the scraped Wix catalog that db:import reads
 | `npm run db:check` | report spec coverage and list listings with empty fields |
 | `npm run db:generate` | regenerate SQL after editing the Drizzle schema |
 
+## Diagnosing a deployment
+
+`GET /api/health` reports which database and storage backend resolved, how many listings
+are visible, and names any missing environment variable — without echoing secrets. It is
+the first thing to check when a deployment returns a server error.
+
 ## Notes
 
 - **Database keys are English, the UI is Hungarian.** `kind`, `status` and `season` are
@@ -65,6 +71,9 @@ data/wix-export/     the scraped Wix catalog that db:import reads
   really six dimensions tangled together, and every new listing meant hand-ticking four to
   six checkboxes. Diameter, bolt pattern, make, brand and season are now typed columns, and
   the filter pages are derived queries.
+- **The local fallbacks never apply in production.** PGlite and `public/uploads` both write
+  to the filesystem, which is read-only on Vercel. `src/lib/env.ts` turns a missing
+  `DATABASE_URL` into an error naming the variable, rather than an opaque 500.
 - **Old URLs still resolve.** Every listing keeps its `legacy_slug`, and
   `/product-page/<slug>` 301s to the new URL. The six Wix brand pages —
   which served the *wrong* brand, `/copy-of-audi` showing Toyota — redirect to the right

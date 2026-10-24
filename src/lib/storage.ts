@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, writeFile, unlink } from "node:fs/promises";
 import { join } from "node:path";
 import sharp from "sharp";
+import { assertStorageConfigured } from "./env";
 
 /**
  * Images live in one of two places, chosen by env:
@@ -31,6 +32,8 @@ const MAX_EDGE = 1400;
  * and avoid cumulative layout shift.
  */
 export async function storeImage(input: Buffer, hint = "img"): Promise<StoredImage> {
+  assertStorageConfigured();
+
   const processed = await sharp(input)
     .rotate() // honour EXIF orientation — phone photos are routinely sideways without it
     .resize({ width: MAX_EDGE, height: MAX_EDGE, fit: "inside", withoutEnlargement: true })

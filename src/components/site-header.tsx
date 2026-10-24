@@ -20,7 +20,7 @@ export function SiteHeader() {
         {/* Mobile: a spacer keeps the logo optically centred against the menu button. */}
         <span className="w-10 lg:hidden" aria-hidden />
 
-        <Link href="/" onClick={close} className="lg:mr-10" aria-label={`${SITE.name} — főoldal`}>
+        <Link href="/" onClick={close} className="lg:mr-10">
           <Logo />
         </Link>
 

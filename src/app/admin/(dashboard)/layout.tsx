@@ -21,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <div className="border-b border-rule-soft bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6">
           <Link href="/admin" className="flex items-center gap-3">
-            <Logo />
+            <Logo className="h-9" />
             <span className="sr-only">Adminisztráció</span>
           </Link>
 

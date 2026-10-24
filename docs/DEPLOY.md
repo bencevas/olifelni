@@ -94,8 +94,48 @@ Do this **after** checking the deployment works on its `*.vercel.app` URL.
 
 ---
 
-## 3. Before switching the domain
+## 3. Troubleshooting
 
+### "This page couldn't load — A server error occurred"
+
+Almost always a missing environment variable. Check first:
+
+```
+https://<your-deployment>.vercel.app/api/health
+```
+
+It reports which backend each subsystem resolved to and names anything missing, without
+revealing any secret. A healthy production response looks like:
+
+```json
+{
+  "ok": true,
+  "checks": {
+    "environment": "serverless (Vercel)",
+    "database": "Supabase (DATABASE_URL set)",
+    "storage": "Supabase Storage",
+    "listings": 150
+  },
+  "problems": []
+}
+```
+
+| What it says | What to do |
+|---|---|
+| `DATABASE_URL is not set` | Add it in Vercel → Settings → Environment Variables, then **redeploy** — env changes do not apply to existing deployments |
+| `database: local PGlite` in a Vercel environment | Same cause. The local fallback writes to disk, which is read-only on Vercel, so every page 500s |
+| `The database is reachable but empty` | Run `npm run db:migrate` then `npm run db:import` with `DATABASE_URL` set |
+| `Database query failed: relation "listings" does not exist` | Migrations have not run — `npm run db:migrate` |
+| Pages load but no photos | `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` missing, or the `listings` bucket is not public |
+
+After changing any environment variable in Vercel you must trigger a new deployment.
+Existing ones keep the values they were built with.
+
+---
+
+## 4. Before switching the domain
+
+- [ ] `/api/health` returns `"ok": true`
 - [ ] Every page loads on the `*.vercel.app` URL
 - [ ] Photos appear (if not, the bucket is not public, or `SUPABASE_BUCKET` is wrong)
 - [ ] The owner can log in at `/admin/belepes`

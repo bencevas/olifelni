@@ -1,0 +1,34 @@
+/**
+ * Where the app is running, and what it has been given to run with.
+ *
+ * The local defaults (PGlite on disk, photos in public/uploads) are deliberate conveniences
+ * for development, but both write to the filesystem — which on Vercel is read-only outside
+ * /tmp, and ephemeral per invocation even there. Silently falling back to them in a
+ * deployment produces an opaque 500 on every request, so the checks here turn that into a
+ * message that names the missing variable.
+ */
+export const isServerless = Boolean(process.env.VERCEL);
+
+export const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+export const hasSupabaseStorage = Boolean(
+  process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY,
+);
+
+const SETUP_DOC = "See docs/DEPLOY.md.";
+
+export function assertDatabaseConfigured(): void {
+  if (hasDatabaseUrl || !isServerless) return;
+  throw new Error(
+    "DATABASE_URL is not set. This deployment has no database: the local fallback " +
+      "(PGlite) writes to disk, which is read-only here. Add DATABASE_URL in Vercel → " +
+      `Settings → Environment Variables, using Supabase's transaction pooler string (port 6543), then redeploy. ${SETUP_DOC}`,
+  );
+}
+
+export function assertStorageConfigured(): void {
+  if (hasSupabaseStorage || !isServerless) return;
+  throw new Error(
+    "SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set. Uploads would be written to " +
+      `public/uploads, which is read-only here and would not persist between requests. ${SETUP_DOC}`,
+  );
+}

@@ -1,6 +1,7 @@
 import { drizzle as drizzlePg } from "drizzle-orm/postgres-js";
 import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import * as schema from "./schema";
+import { assertDatabaseConfigured } from "../env";
 
 /**
  * One schema, two drivers.
@@ -25,6 +26,7 @@ declare global {
 }
 
 function create(): Db {
+  assertDatabaseConfigured();
   const url = process.env.DATABASE_URL;
 
   if (url) {

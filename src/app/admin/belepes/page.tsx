@@ -8,7 +8,7 @@ export default async function LoginPage() {
 
   return (
     <div className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-12">
-      <Logo className="mb-8" />
+      <Logo className="mb-8 h-12" />
       <h1 className="text-2xl font-extrabold">Belépés</h1>
       <p className="mt-1.5 text-ink-soft">Hirdetések kezeléséhez jelentkezz be.</p>
       <div className="mt-6">
