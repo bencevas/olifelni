@@ -63,9 +63,13 @@ function wheres(f: Filters): SQL[] {
 }
 
 function order(sort: Filters["sort"]) {
-  if (sort === "price_asc") return [asc(listings.priceHuf)];
-  if (sort === "price_desc") return [desc(listings.priceHuf)];
-  return [desc(listings.createdAt)];
+  // Sold sets stay listed — they are proof of stock moving, and their URLs are already
+  // indexed — but they always sort below anything still available, whatever else is
+  // chosen. Otherwise a buyer filtering for 19" Audi wheels gets dead listings up top.
+  const soldLast = sql`(${listings.status} = 'sold')`;
+  if (sort === "price_asc") return [soldLast, asc(listings.priceHuf)];
+  if (sort === "price_desc") return [soldLast, desc(listings.priceHuf)];
+  return [soldLast, desc(listings.createdAt)];
 }
 
 async function attachCovers(rows: Listing[]): Promise<ListingCard[]> {

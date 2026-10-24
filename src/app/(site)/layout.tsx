@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CallButton } from "@/components/call-button";
 
 /**
  * Public site chrome. The admin lives outside this group so it does not inherit the
@@ -11,6 +12,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <CallButton />
     </>
   );
 }

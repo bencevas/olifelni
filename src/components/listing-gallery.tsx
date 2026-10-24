@@ -32,7 +32,7 @@ export function ListingGallery({ images }: { images: GalleryImage[] }) {
           }}
         >
           {images.map((img, i) => (
-            <div key={img.url} className="relative aspect-square w-full shrink-0 snap-center bg-sheet">
+            <div key={img.url} className="relative aspect-[4/5] w-full shrink-0 snap-center bg-sheet">
               <Image
                 src={img.url}
                 alt={img.alt}
@@ -77,7 +77,7 @@ export function ListingGallery({ images }: { images: GalleryImage[] }) {
             ))}
           </div>
         )}
-        <div className="relative aspect-square flex-1 overflow-hidden rounded-lg bg-sheet">
+        <div className="relative aspect-[4/5] flex-1 overflow-hidden rounded-lg bg-sheet">
           <Image
             src={images[active].url}
             alt={images[active].alt}

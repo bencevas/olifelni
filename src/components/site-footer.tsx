@@ -32,7 +32,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-rule-soft">
-        <p className="mx-auto max-w-7xl px-4 py-5 text-center text-sm text-ink-soft sm:px-6">
+        <p className="mx-auto max-w-7xl px-4 pb-24 pt-5 text-center text-sm text-ink-soft sm:px-6 lg:pb-5">
           <span className="font-bold text-ink">{SITE.legalName}</span> — Minden jog fenntartva{" "}
           {/* The Wix footer was hardcoded to 2024 and went stale. */}
           {new Date().getFullYear()}

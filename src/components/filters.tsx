@@ -14,11 +14,9 @@ export type FacetGroup = {
 export function Filters({
   groups,
   priceBounds,
-  total,
 }: {
   groups: FacetGroup[];
   priceBounds: { min: number; max: number };
-  total: number;
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -121,7 +119,7 @@ export function Filters({
                 onClick={() => setMobileOpen(false)}
                 className="flex-1 rounded-lg bg-brand py-3 font-bold text-white"
               >
-                {total} találat
+                Találatok mutatása
               </button>
             </div>
           </div>
