@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { db, leads } from "@/lib/db";
+import { notifyNewLead } from "@/lib/notify";
 
 const LeadSchema = z.object({
   name: z.string().trim().min(2, "Kérlek add meg a neved."),
@@ -32,14 +33,24 @@ export async function submitLead(_prev: LeadState, formData: FormData): Promise<
     return { ok: false, error: "Adj meg telefonszámot vagy e-mail címet, hogy válaszolni tudjunk." };
   }
 
-  await db.insert(leads).values({
+  const lead = {
     listingId: d.listingId || null,
     listingTitle: d.listingTitle || null,
     name: d.name,
     phone: d.phone || null,
     email: d.email || null,
     message: d.message ?? "",
-  });
+  };
+
+  await db.insert(leads).values(lead);
+
+  // The enquiry is already saved, so a failing mail provider must not surface as a form
+  // error and push the visitor into submitting again. Log it and move on.
+  try {
+    await notifyNewLead(lead);
+  } catch (e) {
+    console.error("Lead notification email failed:", (e as Error).message);
+  }
 
   return { ok: true };
 }

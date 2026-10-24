@@ -94,7 +94,28 @@ Do this **after** checking the deployment works on its `*.vercel.app` URL.
 
 ---
 
-## 3. Troubleshooting
+## 3. E-mail notification for enquiries (optional, recommended)
+
+Without this, enquiries only appear in `/admin/erdeklodesek` and the owner has to remember
+to look. For a wheel set, a day's delay usually means the sale is gone.
+
+1. Sign up at [resend.com](https://resend.com) (the free tier covers this volume).
+2. Add and verify `olifelni.com` as a sending domain — it is a few DNS records.
+3. Add to Vercel's environment variables:
+
+   | Name | Value |
+   |---|---|
+   | `RESEND_API_KEY` | `re_...` |
+   | `LEAD_NOTIFY_FROM` | `Oli Felni <noreply@olifelni.com>` — must be on the verified domain |
+   | `LEAD_NOTIFY_TO` | `olifelni5@gmail.com` (comma-separate for several recipients) |
+
+Replies go to the enquirer's address automatically. If the provider is down the enquiry is
+still saved — the send is attempted after the database write and its failure is logged
+rather than shown to the visitor.
+
+---
+
+## 4. Troubleshooting
 
 ### "This page couldn't load — A server error occurred"
 
@@ -127,13 +148,14 @@ revealing any secret. A healthy production response looks like:
 | `The database is reachable but empty` | Run `npm run db:migrate` then `npm run db:import` with `DATABASE_URL` set |
 | `Database query failed: relation "listings" does not exist` | Migrations have not run — `npm run db:migrate` |
 | Pages load but no photos | `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` missing, or the `listings` bucket is not public |
+| `leadEmail: "off (admin only)"` | Expected unless you did section 3 — enquiries still arrive, just without an e-mail |
 
 After changing any environment variable in Vercel you must trigger a new deployment.
 Existing ones keep the values they were built with.
 
 ---
 
-## 4. Before switching the domain
+## 5. Before switching the domain
 
 - [ ] `/api/health` returns `"ok": true`
 - [ ] Every page loads on the `*.vercel.app` URL
@@ -141,6 +163,7 @@ Existing ones keep the values they were built with.
 - [ ] The owner can log in at `/admin/belepes`
 - [ ] Creating a listing with photos works **from a phone**, on mobile data
 - [ ] The contact form delivers — submit one and check `/admin/erdeklodesek`
+- [ ] If e-mail notification is configured, that test enquiry also arrived by e-mail
 - [ ] Old links still work: `/product-page/audi-20-5x112` should land on the new page
 - [ ] `https://<domain>/sitemap.xml` lists the catalog
 - [ ] Add the site to [Google Search Console](https://search.google.com/search-console)

@@ -197,7 +197,12 @@ async function main() {
     if (existing.length) {
       listingId = existing[0].id;
       await db.update(listings).set(row).where(eq(listings.id, listingId));
-      await db.delete(listingImages).where(eq(listingImages.listingId, listingId));
+      // Only clear the existing images when this run will actually replace them.
+      // Clearing them under --skip-images would strip every photo from the catalog
+      // while leaving the files orphaned on disk.
+      if (!skipImages) {
+        await db.delete(listingImages).where(eq(listingImages.listingId, listingId));
+      }
       updated++;
     } else {
       const [ins] = await db.insert(listings).values(row).returning({ id: listings.id });

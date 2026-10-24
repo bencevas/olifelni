@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 import { db, listings } from "@/lib/db";
 import { hasDatabaseUrl, hasSupabaseStorage, isServerless } from "@/lib/env";
+import { emailConfigured } from "@/lib/notify";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +19,7 @@ export async function GET() {
     environment: isServerless ? "serverless (Vercel)" : "local",
     database: hasDatabaseUrl ? "Supabase (DATABASE_URL set)" : "local PGlite",
     storage: hasSupabaseStorage ? "Supabase Storage" : "local public/uploads",
+    leadEmail: emailConfigured ? "Resend" : "off (admin only)",
   };
 
   const problems: string[] = [];

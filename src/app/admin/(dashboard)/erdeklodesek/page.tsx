@@ -1,5 +1,6 @@
 import { desc } from "drizzle-orm";
 import { db, leads } from "@/lib/db";
+import { emailConfigured } from "@/lib/notify";
 import { LeadRow } from "@/components/admin/lead-row";
 
 export default async function LeadsPage() {
@@ -26,8 +27,9 @@ export default async function LeadsPage() {
       )}
 
       <p className="mt-8 text-[13px] text-ink-soft">
-        Tipp: a weboldal űrlapjáról érkező üzenetek ide kerülnek. Érdemes naponta ránézni —
-        e-mail értesítés jelenleg nincs beállítva.
+        {emailConfigured
+          ? "A weboldal űrlapjáról érkező üzenetek ide kerülnek, és e-mailben is értesítünk róluk."
+          : "A weboldal űrlapjáról érkező üzenetek ide kerülnek. Érdemes naponta ránézni — e-mail értesítés jelenleg nincs beállítva."}
       </p>
     </div>
   );

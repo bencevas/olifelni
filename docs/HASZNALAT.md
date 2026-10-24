@@ -89,8 +89,9 @@ A fül mellett piros számban látod, hányra nem válaszoltál még.
 A telefonszámra és az e-mail címre rá lehet kattintani — telefonon rögtön hívja.
 Ha elintézted, nyomd meg az **Elintézve** gombot, hogy eltűnjön a számlálóból.
 
-> Az oldal nem küld e-mail értesítést az új üzenetekről, ezért érdemes naponta ránézni.
-> Ha szeretnél értesítést, szólj — be lehet állítani.
+> Ha be van kapcsolva az e-mail értesítés, minden új üzenetről kapsz levelet is.
+> Hogy nálad be van-e, azt az Érdeklődések oldal alján látod. Ha nincs, érdemes naponta
+> ránézni erre a fülre.
 
 ---
 
