@@ -46,6 +46,47 @@ function diagnose(ep: { host: string; port: string } | null): string | null {
   return null;
 }
 
+/**
+ * Drizzle wraps driver errors, and the useful part — the Postgres SQLSTATE and detail —
+ * lives on `cause`. Reading only the outer `.message` reports "Failed query" and hides
+ * whether the table is missing or the password is wrong.
+ */
+function describeError(e: unknown): { text: string; code: string | null } {
+  const parts: string[] = [];
+  let code: string | null = null;
+  const seen = new Set<unknown>();
+  let cur: unknown = e;
+
+  while (cur && typeof cur === "object" && !seen.has(cur)) {
+    seen.add(cur);
+    const err = cur as { message?: string; code?: string; detail?: string; cause?: unknown };
+    if (!code && typeof err.code === "string") code = err.code;
+    if (err.message) parts.push(err.message.split("\n")[0]);
+    if (err.detail) parts.push(err.detail);
+    cur = err.cause;
+  }
+
+  const text = parts.filter((v, i) => parts.indexOf(v) === i).join(" <- ");
+  return { text: text || String(e), code };
+}
+
+/** https://www.postgresql.org/docs/current/errcodes-appendix.html */
+function hintForCode(code: string | null): string | null {
+  switch (code) {
+    case "42P01":
+      return 'The "listings" table does not exist, so the schema was never applied. In Supabase -> SQL Editor, run supabase/migrations/0000_init.sql and then 0001_rls.sql, then load the catalogue with: npm run db:import';
+    case "28P01":
+    case "28000":
+      return "Authentication was rejected. Check the password in DATABASE_URL — if the string still contains [YOUR-PASSWORD] it was pasted unedited, and any special characters in the password must be percent-encoded.";
+    case "3D000":
+      return "That database does not exist. The connection string should end in /postgres.";
+    case "08P01":
+      return "Protocol error — this usually means prepared statements are on against the transaction pooler. The code sets prepare:false, so check DATABASE_URL is the pooler on port 6543 and not a direct host.";
+    default:
+      return null;
+  }
+}
+
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   let timer: ReturnType<typeof setTimeout>;
   return Promise.race([
@@ -104,10 +145,16 @@ export async function GET() {
     }
   } catch (e) {
     checks.listings = null;
-    problems.push(`Database query failed: ${(e as Error).message}`);
-    if (!misconfigured) {
+    const { text, code } = describeError(e);
+    checks.databaseError = code ? `${text} [${code}]` : text;
+    problems.push(`Database query failed: ${text}${code ? ` [${code}]` : ""}`);
+
+    const hint = hintForCode(code);
+    if (hint) {
+      problems.push(hint);
+    } else if (!misconfigured && /timed out|no response|ECONNREFUSED|ETIMEDOUT|ENOTFOUND/i.test(text)) {
       problems.push(
-        "If the endpoint above looks right, check the Supabase project is not paused — free projects pause after a week idle and connections then hang exactly like this.",
+        "The connection is not being answered. Check the Supabase project is not paused — free projects pause after a week idle and hang exactly like this.",
       );
     }
   }
