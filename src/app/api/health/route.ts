@@ -23,8 +23,12 @@ function endpoint(url: string | undefined): { host: string; port: string } | nul
  * direct URL does not fail — it hangs until the function is killed. That looks identical
  * to an outage, so it is worth naming explicitly.
  */
+/**
+ * Three things change at once, and changing only the port leaves it still broken:
+ * the username gains the project ref, and the host is a different machine entirely.
+ */
 const POOLER_FIX =
-  'Use the "Transaction pooler" string instead: Supabase -> Project Settings -> Database -> Connection string -> Transaction pooler. The host looks like aws-0-<region>.pooler.supabase.com and the port is 6543.';
+  'Copy the whole string from Supabase -> Project Settings -> Database -> Connection string -> "Transaction pooler". Both the username and the host change, not just the port: user postgres -> postgres.<ref>, host -> aws-N-<region>.pooler.supabase.com, port 6543.';
 
 function diagnose(ep: { host: string; port: string } | null): string | null {
   if (!ep) return null;
