@@ -245,6 +245,37 @@ export async function moveListing(id: string, to: "up" | "down" | "top") {
   revalidatePath("/", "layout");
 }
 
+/**
+ * Drag and drop: puts a listing directly after `afterId`, or directly before `beforeId`
+ * when it was dropped first in the grid. Neighbours rather than an index, because the grid
+ * may be showing a filtered subset of all listings.
+ *
+ * Integers leave no gap between neighbours, so the whole order is rewritten in one
+ * statement. That is a few hundred rows at most.
+ */
+export async function placeListing(id: string, afterId: string | null, beforeId: string | null) {
+  await requireUser();
+
+  const all = await db
+    .select({ id: listings.id })
+    .from(listings)
+    .orderBy(desc(listings.sortOrder), desc(listings.createdAt), desc(listings.id));
+  const ids = all.map((r) => r.id).filter((x) => x !== id);
+  if (ids.length === all.length) return; // no such listing
+
+  const anchor = afterId ?? beforeId;
+  const i = anchor ? ids.indexOf(anchor) : -1;
+  if (i < 0) return;
+  ids.splice(afterId ? i + 1 : i, 0, id);
+
+  const rows = ids.map((x, n) => sql`(${x}::uuid, ${ids.length - n}::int)`);
+  await db.execute(sql`
+    update ${listings} set sort_order = v.n
+    from (values ${sql.join(rows, sql`, `)}) as v(id, n)
+    where ${listings.id} = v.id`);
+  revalidatePath("/", "layout");
+}
+
 export async function deleteListing(id: string) {
   await requireUser();
   const imgs = await db.select().from(listingImages).where(eq(listingImages.listingId, id));

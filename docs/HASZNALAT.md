@@ -73,7 +73,11 @@ kelt el, és egy hasonló szett feltöltésekor másolatot tudsz készíteni ró
 
 ## Sorrend: mi legyen elöl
 
-A **Hirdetések** oldalon minden kártya alján három gomb van:
+A legegyszerűbb: **fogd meg a kártyát és húzd** oda, ahová szeretnéd. Számítógépen egérrel,
+telefonon **nyomd hosszan** a kártyát, amíg megemelkedik, utána húzd. Elengedéskor a sorrend
+azonnal mentődik.
+
+Pontos lépésekhez minden kártya alján három gomb is van:
 
 - **⇤ Legelőre** — a hirdetés az első helyre kerül
 - **← Előrébb** / **→ Hátrébb** — egy hellyel előrébb vagy hátrébb
