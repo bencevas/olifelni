@@ -4,10 +4,10 @@
  */
 export const SITE = {
   name: "Oli Felni",
-  legalName: "OF Felni Kft.",
+  legalName: "OF-Felni Kft",
   phone: "+36 30 177 8667",
   phoneHref: "tel:+36301778667",
-  email: "olifelni5@gmail.com",
+  email: "of.felnikft@gmail.com",
   address: "6728 Szeged, Algyői út 87",
   mapsUrl: "https://maps.google.com/?q=6728+Szeged,+Algyői+út+87",
   tagline: "Használt és új alufelnik, gumiabroncsok",
