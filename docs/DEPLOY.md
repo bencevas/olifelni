@@ -107,7 +107,7 @@ to look. For a wheel set, a day's delay usually means the sale is gone.
    |---|---|
    | `RESEND_API_KEY` | `re_...` |
    | `LEAD_NOTIFY_FROM` | `Oli Felni <noreply@olifelni.com>` — must be on the verified domain |
-   | `LEAD_NOTIFY_TO` | `olifelni5@gmail.com` (comma-separate for several recipients) |
+   | `LEAD_NOTIFY_TO` | `of.felnikft@gmail.com` (comma-separate for several recipients) |
 
 Replies go to the enquirer's address automatically. If the provider is down the enquiry is
 still saved — the send is attempted after the database write and its failure is logged
