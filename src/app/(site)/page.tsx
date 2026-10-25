@@ -14,8 +14,8 @@ export default async function HomePage() {
   const wheelFilter = { kind: "wheel" as const };
 
   const [wheels, tires, makes, diameters, bolts] = await Promise.all([
-    searchListings({ kind: "wheel", sort: "newest", page: 1 }),
-    searchListings({ kind: "tire", sort: "newest", page: 1 }),
+    searchListings({ kind: "wheel", sort: "featured", page: 1 }),
+    searchListings({ kind: "tire", sort: "featured", page: 1 }),
     facetCounts(wheelFilter, "carMake"),
     facetCounts(wheelFilter, "diameterIn"),
     facetCounts(wheelFilter, "boltPattern"),

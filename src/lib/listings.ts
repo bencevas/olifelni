@@ -15,7 +15,7 @@ export type Filters = {
   season?: string[];
   priceMin?: number;
   priceMax?: number;
-  sort?: "newest" | "price_asc" | "price_desc";
+  sort?: "featured" | "newest" | "price_asc" | "price_desc";
   page?: number;
   /** Admin-only: include sold/hidden rows, which the public site never shows. */
   includeInactive?: boolean;
@@ -69,7 +69,8 @@ function order(sort: Filters["sort"]) {
   const soldLast = sql`(${listings.status} = 'sold')`;
   if (sort === "price_asc") return [soldLast, asc(listings.priceHuf)];
   if (sort === "price_desc") return [soldLast, desc(listings.priceHuf)];
-  return [soldLast, desc(listings.createdAt)];
+  if (sort === "newest") return [soldLast, desc(listings.createdAt)];
+  return [soldLast, desc(listings.sortOrder), desc(listings.createdAt)];
 }
 
 async function attachCovers(rows: Listing[]): Promise<ListingCard[]> {
@@ -195,6 +196,6 @@ export async function relatedListings(l: Listing, limit = 4): Promise<ListingCar
   if (l.kind === "wheel" && l.boltPattern) w.push(eq(listings.boltPattern, l.boltPattern));
   if (l.kind === "tire" && l.diameterIn) w.push(eq(listings.diameterIn, l.diameterIn));
   const rows = await db.select().from(listings).where(and(...w))
-    .orderBy(desc(listings.createdAt)).limit(limit);
+    .orderBy(desc(listings.sortOrder), desc(listings.createdAt)).limit(limit);
   return attachCovers(rows);
 }

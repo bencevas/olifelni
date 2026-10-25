@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { and, eq, ne, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, lt, ne, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db, listings, listingImages, leads } from "@/lib/db";
 import { requireUser, login as doLogin, logout as doLogout } from "@/lib/auth";
@@ -81,6 +81,14 @@ async function uniqueSlug(base: string, excludeId?: string | null): Promise<stri
   return `${root}-${Date.now()}`;
 }
 
+/** One above the current maximum, so the listing shows first. */
+async function topSortOrder(): Promise<number> {
+  const [r] = await db
+    .select({ n: sql<number>`coalesce(max(${listings.sortOrder}), 0)::int` })
+    .from(listings);
+  return Number(r?.n ?? 0) + 1;
+}
+
 export type SaveState = { error?: string };
 
 export async function saveListing(_prev: SaveState, formData: FormData): Promise<SaveState> {
@@ -136,7 +144,10 @@ export async function saveListing(_prev: SaveState, formData: FormData): Promise
     // Keep the stored files; only the ordering rows are rewritten below.
     await db.delete(listingImages).where(eq(listingImages.listingId, listingId));
   } else {
-    const [ins] = await db.insert(listings).values(row).returning({ id: listings.id });
+    const [ins] = await db
+      .insert(listings)
+      .values({ ...row, sortOrder: await topSortOrder() })
+      .returning({ id: listings.id });
     listingId = ins.id;
   }
 
@@ -164,6 +175,73 @@ export async function setStatus(id: string, status: "active" | "reserved" | "sol
     .update(listings)
     .set({ status, soldAt: status === "sold" ? new Date() : null, updatedAt: new Date() })
     .where(eq(listings.id, id));
+  revalidatePath("/", "layout");
+}
+
+/**
+ * Moves a listing one place up or down, or to the top, of the order the public site shows.
+ *
+ * "One place" means past the next listing a visitor would actually see it next to: same
+ * kind (wheels and tires are separate pages), and sold sets only among sold sets, since
+ * those always sort last. Hidden listings are skipped unless the one moving is hidden too,
+ * so every click visibly changes the public order.
+ */
+export async function moveListing(id: string, to: "up" | "down" | "top") {
+  await requireUser();
+
+  if (to === "top") {
+    await db.update(listings).set({ sortOrder: await topSortOrder() }).where(eq(listings.id, id));
+    revalidatePath("/", "layout");
+    return;
+  }
+
+  const current = () =>
+    db
+      .select({ kind: listings.kind, status: listings.status, sortOrder: listings.sortOrder })
+      .from(listings)
+      .where(eq(listings.id, id))
+      .limit(1)
+      .then((r) => r[0]);
+
+  let cur = await current();
+  if (!cur) return;
+
+  // Swapping two equal values would do nothing. Listings created by the importer all start
+  // at 0, so spread every value out first, keeping the order they already display in.
+  const [{ n }] = await db
+    .select({ n: sql<number>`count(*)::int` })
+    .from(listings)
+    .where(eq(listings.sortOrder, cur.sortOrder));
+  if (Number(n) > 1) {
+    await db.execute(sql`
+      update ${listings} set sort_order = r.n
+      from (select id, row_number() over (order by sort_order, created_at, id) as n from ${listings}) r
+      where ${listings.id} = r.id`);
+    cur = (await current())!;
+  }
+
+  const up = to === "up";
+  const [other] = await db
+    .select({ id: listings.id, sortOrder: listings.sortOrder })
+    .from(listings)
+    .where(
+      and(
+        eq(listings.kind, cur.kind),
+        cur.status === "sold" ? eq(listings.status, "sold") : ne(listings.status, "sold"),
+        cur.status === "hidden" ? undefined : ne(listings.status, "hidden"),
+        up ? gt(listings.sortOrder, cur.sortOrder) : lt(listings.sortOrder, cur.sortOrder),
+      ),
+    )
+    .orderBy(up ? asc(listings.sortOrder) : desc(listings.sortOrder))
+    .limit(1);
+  if (!other) return; // already first or last
+
+  await db
+    .update(listings)
+    .set({
+      sortOrder: sql`case when ${listings.id} = ${id} then ${other.sortOrder}::int else ${cur.sortOrder}::int end`,
+    })
+    .where(inArray(listings.id, [id, other.id]));
   revalidatePath("/", "layout");
 }
 
@@ -209,6 +287,7 @@ export async function duplicateListing(id: string) {
       ...(copyFrom as typeof src),
       title: `${src.title} (másolat)`,
       slug: await uniqueSlug(src.slug),
+      sortOrder: await topSortOrder(),
       status: "hidden", // a copy is a draft until the owner says otherwise
       soldAt: null,
       legacyWixId: null,

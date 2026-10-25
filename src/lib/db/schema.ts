@@ -51,6 +51,9 @@ export const listings = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
     soldAt: timestamp("sold_at", { withTimezone: true }),
+
+    // Manual display order from the admin list's up/down buttons. Higher shows first.
+    sortOrder: integer("sort_order").default(0).notNull(),
   },
   (t) => [
     uniqueIndex("listings_slug_key").on(t.slug),

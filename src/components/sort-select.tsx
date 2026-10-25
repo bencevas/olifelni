@@ -3,7 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { PARAM } from "@/lib/search-params";
 
+/** "featured" is the owner's own order from the admin list, and the default. */
 const OPTIONS = [
+  { value: "featured", label: "Ajánlott" },
   { value: "newest", label: "Legújabb" },
   { value: "price_asc", label: "Ár szerint növekvő" },
   { value: "price_desc", label: "Ár szerint csökkenő" },
@@ -18,10 +20,10 @@ export function SortSelect() {
       <span className="sr-only sm:not-sr-only sm:text-ink-soft">Rendezés</span>
       <div className="relative">
         <select
-          value={params.get(PARAM.sort) ?? "newest"}
+          value={params.get(PARAM.sort) ?? "featured"}
           onChange={(e) => {
             const sp = new URLSearchParams(params.toString());
-            if (e.target.value === "newest") sp.delete(PARAM.sort);
+            if (e.target.value === "featured") sp.delete(PARAM.sort);
             else sp.set(PARAM.sort, e.target.value);
             sp.delete(PARAM.page);
             router.push(sp.toString() ? `?${sp}` : "?", { scroll: false });

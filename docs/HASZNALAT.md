@@ -71,6 +71,19 @@ kelt el, és egy hasonló szett feltöltésekor másolatot tudsz készíteni ró
 
 ---
 
+## Sorrend: mi legyen elöl
+
+A **Hirdetések** listában minden sor elején három gomb van:
+
+- **⤒ Legelőre** — a hirdetés az első helyre kerül
+- **↑ Feljebb** / **↓ Lejjebb** — egy hellyel feljebb vagy lejjebb
+
+Az oldalon a felnik és a gumik ebben a sorrendben jelennek meg, a főoldalon is. Az új
+hirdetés automatikusan az első helyre kerül. Az eladott szettek mindig a lista végén
+maradnak, akárhová teszed őket.
+
+---
+
 ## Hasonló szett feltöltése gyorsan
 
 Nyisd meg a régi hirdetést (**Szerkesztés**), görgess az aljára, és kattints a
