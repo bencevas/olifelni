@@ -10,12 +10,21 @@ There are four separate things to move, and they are independent:
 | Code | GitHub repo | Owner's GitHub account |
 | Hosting | Vercel project, **Realfood Budapest** team | Owner's own Vercel account |
 | Database + photos | Supabase project | Owner's Supabase organisation |
-| Domain | Wix (registrar + DNS) | See [DEPLOY.md](DEPLOY.md) — separate track |
+| Domain | **Live on Vercel.** Registrar + DNS still Wix | Moves with the Vercel project |
 
-**The live site stays up throughout.** Vercel keeps serving the last successful build no
-matter who owns the repo or whether git is connected. Only the ability to ship *new*
-changes is briefly interrupted. Nothing below risks downtime except the domain step, which
-is why the domain goes last.
+**Steps 1 and 2 cannot take the site down.** Vercel keeps serving the last successful
+build no matter who owns the repo or whether git is connected — only the ability to ship
+*new* changes is interrupted.
+
+**Step 3 can.** olifelni.com is already live on Vercel, so the project transfer now
+involves moving a domain that is serving real traffic. Read that section before starting
+it; it is the only genuinely risky part of the handover.
+
+> **Wix cannot be cancelled.** DNS for olifelni.com is still hosted on Wix nameservers
+> (`ns0/ns1.wixdns.net`), and Wix is still the registrar. Cancelling the Wix plan stops
+> those nameservers answering and the site goes dark — even though it is hosted on Vercel
+> and nothing about Vercel changed. Move DNS off Wix first if the owner wants to stop
+> paying them. See [DEPLOY.md](DEPLOY.md).
 
 ---
 
@@ -96,20 +105,40 @@ Nothing in the repo contains secrets — `.env*` is git-ignored and only `.env.e
 
 ## 3. Vercel — getting it off the Realfood Budapest plan
 
-**Do this before pointing olifelni.com at Vercel.** No custom domain is attached to the
-project yet, which makes the transfer clean; moving a project that is already serving a
-live domain risks downtime while the domain is removed and re-added.
+This is the step that can cause an outage, because olifelni.com is already serving live
+traffic from this project. A domain can only belong to one Vercel project at a time, so
+there is a window between removing it from the old project and it being verified on the
+new one. Expect seconds to a couple of minutes while Vercel issues a TLS certificate for
+the new project.
 
-1. Owner signs in to their own Vercel account.
+**The DNS records at Wix do not change.** They point at Vercel's shared edge
+(`cname.vercel-dns.com` for www, and an anycast A record for the apex), not at a specific
+project, so nothing needs editing on the Wix side.
+
+Do it at a quiet hour, with both accounts open and ready.
+
+1. Owner signs in to their own Vercel account and accepts the invite.
 2. Realfood Budapest team → the project → Settings → General → **Transfer Project** →
-   transfer to the owner's account. They must accept.
-3. After the transfer, in the owner's account:
+   to the owner's account.
+3. Move the domain to the new project — remove `olifelni.com` and `www.olifelni.com` from
+   the old project, add them to the new one, and let the certificate issue.
+4. Verify straight away:
+
+   ```bash
+   curl -sI https://www.olifelni.com | head -1            # expect 200
+   curl -s https://www.olifelni.com/api/health            # expect "ok": true
+   ```
+
+5. Then, in the owner's account:
    - **Check every environment variable came across** — `DATABASE_URL`, `SUPABASE_URL`,
      `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SITE_URL`. Do not assume; open each one.
    - **Reconnect the GitHub repo** (Settings → Git) to the owner's transferred repo.
    - Push a trivial commit and confirm it builds and deploys.
-   - Confirm `/api/health` is `"ok": true`.
-4. Confirm the project no longer appears under Realfood Budapest, so it stops being billed.
+6. Confirm the project no longer appears under Realfood Budapest, so it stops being billed.
+
+**Keep your Realfood Budapest access until step 4 passes.** If the domain will not attach
+to the owner's project, re-adding it to the original project is the rollback, and that is
+only possible while you are still in that team. Leaving early removes the way back.
 
 Watch for:
 
@@ -122,16 +151,20 @@ Watch for:
 - `vercel.json` pins the region to `fra1` (Frankfurt) and travels with the repo — nothing
   to redo.
 
-## 4. Domain
+## 4. Wix — what is still tied to it
 
-Only once the owner holds all three accounts. The full decision — repoint DNS versus
-transfer the registration away from Wix — is in [DEPLOY.md](DEPLOY.md). Two things that
-matter here:
+The cutover already happened: olifelni.com resolves to Vercel and the legacy Wix URLs
+redirect correctly (`/bmw` → `/felnik?marka=BMW`, and the rest, from `next.config.ts`).
+What remains is that **Wix is still the registrar and still hosts the DNS**.
 
-- **Re-run the import immediately before switching DNS.** The Wix site stays live until
-  the moment you cut over, so stock will have changed since the last import:
-  `mv .env.supabase .env && npm run db:import && mv .env .env.supabase`
-- Keep the Wix plan paid for a few weeks afterwards as a rollback.
+So the Wix plan cannot simply be cancelled. Either:
+
+- **Keep a domain-only Wix account.** Fewest moving parts; the site plan can go.
+- **Move DNS and the registration elsewhere.** Lower long-term cost and no Wix login to
+  maintain, but it is a multi-day transfer. Full detail in [DEPLOY.md](DEPLOY.md).
+
+Either way, do it *after* the Vercel transfer, and never cancel Wix before DNS lives
+somewhere else.
 
 ## 5. Finish
 
@@ -139,6 +172,7 @@ matter here:
 - [ ] Owner can add a listing with photos **from a phone**, on mobile data
 - [ ] `/api/health` is `"ok": true`
 - [ ] Owner has pushed a commit and seen it deploy
+- [ ] `https://www.olifelni.com` serves 200 and `/api/health` is `"ok": true`
 - [ ] Project gone from the Realfood Budapest team
 - [ ] Credentials rotated (0.2) and the owner holds the new ones
 - [ ] **Remove your own access**: leave the Supabase org, the GitHub repo, and the Vercel
