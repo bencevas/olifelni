@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { desc, ilike, or, eq, and, type SQL } from "drizzle-orm";
+import { desc, ilike, or, eq, and, sql, type SQL } from "drizzle-orm";
 import { db, listings, listingImages } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { huf } from "@/lib/format";
 import { KIND_LABEL, STATUS_LABEL } from "@/lib/labels";
 import { specLine } from "@/lib/listings";
 import { StatusControls } from "@/components/admin/status-controls";
+import { OrderControls } from "@/components/admin/order-controls";
 
 type Search = { q?: string; statusz?: string; tipus?: string; mentve?: string; torolve?: string };
 
@@ -31,7 +32,8 @@ export default async function AdminListings({
     .select()
     .from(listings)
     .where(where.length ? and(...where) : undefined)
-    .orderBy(desc(listings.updatedAt))
+    // The same order the public site uses, so the up/down buttons do what they show.
+    .orderBy(sql`(${listings.status} = 'sold')`, desc(listings.sortOrder), desc(listings.createdAt))
     .limit(200);
 
   const covers = new Map<string, string>();
@@ -94,6 +96,8 @@ export default async function AdminListings({
           const cover = covers.get(l.id);
           return (
             <li key={l.id} className="flex flex-wrap items-center gap-4 py-4">
+              <OrderControls id={l.id} />
+
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-sheet">
                 {cover && (
                   <Image src={publicUrl(cover)} alt="" fill sizes="64px" className="object-cover" />

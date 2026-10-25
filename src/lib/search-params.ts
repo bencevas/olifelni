@@ -38,7 +38,7 @@ export function parseFilters(raw: RawParams, kind: "wheel" | "tire"): Filters {
   const sort =
     sortRaw === "price_asc" || sortRaw === "price_desc" || sortRaw === "newest"
       ? sortRaw
-      : "newest";
+      : "featured";
 
   return {
     kind,
