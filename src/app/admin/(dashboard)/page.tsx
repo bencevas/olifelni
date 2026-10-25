@@ -4,7 +4,7 @@ import { desc, ilike, or, eq, and, sql, type SQL } from "drizzle-orm";
 import { db, listings, listingImages } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { huf } from "@/lib/format";
-import { KIND_LABEL, STATUS_LABEL } from "@/lib/labels";
+import { STATUS_LABEL } from "@/lib/labels";
 import { specLine } from "@/lib/listings";
 import { StatusControls } from "@/components/admin/status-controls";
 import { OrderControls } from "@/components/admin/order-controls";
@@ -26,15 +26,18 @@ export default async function AdminListings({
   if (sp.statusz && sp.statusz in STATUS_LABEL) {
     where.push(eq(listings.status, sp.statusz as keyof typeof STATUS_LABEL));
   }
-  if (sp.tipus === "wheel" || sp.tipus === "tire") where.push(eq(listings.kind, sp.tipus));
 
-  const rows = await db
+  // Both kinds are fetched so each tab can show its count; only the open one is rendered.
+  const all = await db
     .select()
     .from(listings)
     .where(where.length ? and(...where) : undefined)
-    // The same order the public site uses, so the up/down buttons do what they show.
+    // The same order the public site uses, so the order buttons do what they show.
     .orderBy(sql`(${listings.status} = 'sold')`, desc(listings.sortOrder), desc(listings.createdAt))
-    .limit(200);
+    .limit(500);
+
+  const kind = sp.tipus === "tire" ? "tire" : "wheel";
+  const rows = all.filter((r) => r.kind === kind);
 
   const covers = new Map<string, string>();
   if (rows.length) {
@@ -46,6 +49,14 @@ export default async function AdminListings({
     all: rows.length,
     active: rows.filter((r) => r.status === "active").length,
     sold: rows.filter((r) => r.status === "sold").length,
+  };
+
+  const tabHref = (k: "wheel" | "tire") => {
+    const p = new URLSearchParams();
+    if (k === "tire") p.set("tipus", "tire");
+    if (sp.q) p.set("q", sp.q);
+    if (sp.statusz) p.set("statusz", sp.statusz);
+    return p.size ? `/admin?${p}` : "/admin";
   };
 
   return (
@@ -68,18 +79,34 @@ export default async function AdminListings({
         </Link>
       </div>
 
+      <nav className="mt-6 flex gap-1 border-b border-rule-soft" aria-label="Kategória">
+        {(["wheel", "tire"] as const).map((k) => (
+          <Link
+            key={k}
+            href={tabHref(k)}
+            aria-current={k === kind ? "page" : undefined}
+            className={`-mb-px border-b-2 px-5 py-3 font-bold transition-colors ${
+              k === kind
+                ? "border-brand text-ink"
+                : "border-transparent text-ink-soft hover:text-ink"
+            }`}
+          >
+            {k === "wheel" ? "Felnik" : "Gumik"}
+            <span className="ml-2 rounded-full bg-sheet px-2 py-0.5 text-xs text-ink-soft">
+              {all.filter((r) => r.kind === k).length}
+            </span>
+          </Link>
+        ))}
+      </nav>
+
       <form className="mt-6 flex flex-wrap gap-3">
+        {kind === "tire" && <input type="hidden" name="tipus" value="tire" />}
         <input
           name="q"
           defaultValue={sp.q ?? ""}
           placeholder="Keresés cím szerint…"
           className="min-w-52 flex-1 rounded-lg border border-rule px-3.5 py-2.5"
         />
-        <select name="tipus" defaultValue={sp.tipus ?? ""} className="rounded-lg border border-rule bg-surface px-3 py-2.5">
-          <option value="">Minden típus</option>
-          <option value="wheel">Felni</option>
-          <option value="tire">Gumi</option>
-        </select>
         <select name="statusz" defaultValue={sp.statusz ?? ""} className="rounded-lg border border-rule bg-surface px-3 py-2.5">
           <option value="">Minden státusz</option>
           {Object.entries(STATUS_LABEL).map(([v, l]) => (
@@ -91,38 +118,63 @@ export default async function AdminListings({
         </button>
       </form>
 
-      <ul className="mt-6 divide-y divide-rule-soft border-y border-rule-soft">
+      <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {rows.map((l) => {
           const cover = covers.get(l.id);
+          const sold = l.status === "sold";
           return (
-            <li key={l.id} className="flex flex-wrap items-center gap-4 py-4">
-              <OrderControls id={l.id} />
-
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-sheet">
-                {cover && (
-                  <Image src={publicUrl(cover)} alt="" fill sizes="64px" className="object-cover" />
+            <li
+              key={l.id}
+              className="flex flex-col overflow-hidden rounded-xl border border-rule-soft bg-surface"
+            >
+              <Link href={`/admin/${l.id}`} className="relative block aspect-square bg-sheet">
+                {cover ? (
+                  <Image
+                    src={publicUrl(cover)}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 270px, (min-width: 640px) 33vw, 50vw"
+                    className={`object-cover ${sold ? "opacity-45 saturate-0" : ""}`}
+                  />
+                ) : (
+                  <span className="flex h-full items-center justify-center text-sm text-ink-soft">
+                    Nincs kép
+                  </span>
                 )}
-              </div>
-
-              <div className="min-w-48 flex-1">
-                <Link href={`/admin/${l.id}`} className="font-bold hover:text-brand-ink">
-                  {l.title}
-                </Link>
-                <p className="mt-0.5 text-[13px] text-ink-soft">
-                  {KIND_LABEL[l.kind]} · {specLine(l) || "nincs megadva"}
-                </p>
-              </div>
-
-              <p className="w-28 shrink-0 font-semibold">{huf(l.priceHuf)}</p>
-
-              <StatusControls id={l.id} status={l.status} />
-
-              <Link
-                href={`/admin/${l.id}`}
-                className="shrink-0 rounded-lg border border-rule px-4 py-2 text-sm font-bold hover:bg-sheet"
-              >
-                Szerkesztés
+                {l.status !== "active" && (
+                  <span
+                    className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white ${
+                      sold ? "bg-carbon" : l.status === "hidden" ? "bg-ink-soft" : "bg-brand"
+                    }`}
+                  >
+                    {STATUS_LABEL[l.status]}
+                  </span>
+                )}
               </Link>
+
+              <div className="flex flex-1 flex-col gap-3 p-3">
+                <div className="flex-1">
+                  <Link href={`/admin/${l.id}`} className="font-bold leading-snug hover:text-brand-ink">
+                    {l.title}
+                  </Link>
+                  <p className="mt-0.5 text-[13px] text-ink-soft">
+                    {specLine(l) || "nincs megadva"}
+                  </p>
+                  <p className="mt-1 font-extrabold">{huf(l.priceHuf)}</p>
+                </div>
+
+                <StatusControls id={l.id} status={l.status} />
+
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <OrderControls id={l.id} />
+                  <Link
+                    href={`/admin/${l.id}`}
+                    className="rounded-lg border border-rule px-3 py-2 text-sm font-bold hover:bg-sheet"
+                  >
+                    Szerkesztés
+                  </Link>
+                </div>
+              </div>
             </li>
           );
         })}

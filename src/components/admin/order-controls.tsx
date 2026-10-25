@@ -4,12 +4,12 @@ import { useTransition } from "react";
 import { moveListing } from "@/app/admin/actions";
 
 const BUTTONS = [
-  { to: "top", label: "Legelőre", path: "M5 4h10M6 12l4-4 4 4M10 8v9" },
-  { to: "up", label: "Feljebb", path: "M5 12.5l5-5 5 5" },
-  { to: "down", label: "Lejjebb", path: "M5 7.5l5 5 5-5" },
+  { to: "top", label: "Legelőre", path: "M5 4v12M15 5l-5 5 5 5" },
+  { to: "up", label: "Előrébb", path: "M12.5 5l-5 5 5 5" },
+  { to: "down", label: "Hátrébb", path: "M7.5 5l5 5-5 5" },
 ] as const;
 
-/** Sets where a listing appears on the public site: one place up or down, or first. */
+/** Sets where a listing appears on the public site: one place earlier or later, or first. */
 export function OrderControls({ id }: { id: string }) {
   const [pending, start] = useTransition();
 

@@ -63,7 +63,7 @@ Végül **Hirdetés létrehozása**. Kész.
 
 ## Ha eladtál egy szettet
 
-Nem kell megnyitni a hirdetést. A **Hirdetések** listában minden sor végén ott az
+Nem kell megnyitni a hirdetést. A **Hirdetések** oldalon minden kártyán ott az
 **Eladva** gomb — egy kattintás.
 
 Az eladott hirdetések megmaradnak. Ez szándékos: így később vissza tudod nézni, mi mennyiért
@@ -73,10 +73,10 @@ kelt el, és egy hasonló szett feltöltésekor másolatot tudsz készíteni ró
 
 ## Sorrend: mi legyen elöl
 
-A **Hirdetések** listában minden sor elején három gomb van:
+A **Hirdetések** oldalon minden kártya alján három gomb van:
 
-- **⤒ Legelőre** — a hirdetés az első helyre kerül
-- **↑ Feljebb** / **↓ Lejjebb** — egy hellyel feljebb vagy lejjebb
+- **⇤ Legelőre** — a hirdetés az első helyre kerül
+- **← Előrébb** / **→ Hátrébb** — egy hellyel előrébb vagy hátrébb
 
 Az oldalon a felnik és a gumik ebben a sorrendben jelennek meg, a főoldalon is. Az új
 hirdetés automatikusan az első helyre kerül. Az eladott szettek mindig a lista végén
