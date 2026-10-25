@@ -43,4 +43,5 @@ next-env.d.ts
 
 # Local database (PGlite) and locally stored listing photos
 /.pglite
+/.pglite.broken-*
 /public/uploads
