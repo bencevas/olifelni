@@ -73,12 +73,11 @@ export default async function HomePage() {
             <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.03] text-white sm:text-6xl lg:text-[4.1rem]">
               Gyári alufelnik
               <br />
-              <span className="text-brand-ink">jó áron.</span>
+              <span className="text-brand-ink">és komplett szettek</span>
             </h1>
 
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/75">
-              Komplett szettek 13-tól 22 colig, téli és nyári gumikkal. Országos
-              szállítás, személyes átvétel Szegeden.
+              Személyesen Szegeden vagy futárszolgálattal országszerte
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">

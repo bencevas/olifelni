@@ -15,6 +15,14 @@ import { assertStorageConfigured } from "./env";
  */
 
 const BUCKET = process.env.SUPABASE_BUCKET ?? "listings";
+
+/**
+ * Trailing slashes trimmed: `https://<ref>.supabase.co/` would otherwise produce
+ * `//storage/...` paths, which next/image rejects as not matching remotePatterns, so every
+ * photo 400s while the files themselves are fine.
+ */
+const SUPABASE_URL = process.env.SUPABASE_URL?.replace(/\/+$/, "");
+
 const LOCAL_DIR = join(process.cwd(), "public", "uploads");
 
 export const usingSupabaseStorage = Boolean(
@@ -45,7 +53,7 @@ export async function storeImage(input: Buffer, hint = "img"): Promise<StoredIma
 
   if (usingSupabaseStorage) {
     const res = await fetch(
-      `${process.env.SUPABASE_URL}/storage/v1/object/${BUCKET}/${key}`,
+      `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${key}`,
       {
         method: "POST",
         headers: {
@@ -67,7 +75,7 @@ export async function storeImage(input: Buffer, hint = "img"): Promise<StoredIma
 
 export async function deleteImage(key: string): Promise<void> {
   if (usingSupabaseStorage) {
-    await fetch(`${process.env.SUPABASE_URL}/storage/v1/object/${BUCKET}/${key}`, {
+    await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${key}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` },
     });
@@ -78,6 +86,6 @@ export async function deleteImage(key: string): Promise<void> {
 
 export function publicUrl(key: string): string {
   return usingSupabaseStorage
-    ? `${process.env.SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${key}`
+    ? `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${key}`
     : `/uploads/${key}`;
 }
