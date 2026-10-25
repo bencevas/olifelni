@@ -100,27 +100,54 @@ export async function ListingDetail({ slug, kind }: { slug: string; kind: "wheel
           {listing.description && (
             <div className="prose-plain mt-6 text-[15px] text-ink-soft">{listing.description}</div>
           )}
+        </div>
+      </div>
 
-          {/* The old site had no call to action at all — this is the whole point of the page. */}
-          <div className="mt-9 rounded-2xl border border-rule-soft bg-sheet p-5 sm:p-6">
-            <p className="text-lg font-extrabold">
+      {/*
+        Full width under both columns. Squeezed into the info column the form had to stack
+        every field, which made the right column far taller than the gallery; across the
+        full width the name and phone sit side by side and the whole block is shorter.
+        The old site had no call to action at all — this is the point of the page.
+      */}
+      <section className="mt-12 rounded-2xl border border-rule-soft bg-sheet p-6 sm:p-8 lg:mt-16 lg:p-10">
+        <div className="grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:gap-14">
+          <div>
+            <h2 className="text-2xl font-extrabold sm:text-3xl">
               {available ? "Érdekel ez a szett?" : "Hasonlót keresel?"}
-            </p>
-            <p className="mt-1 text-[15px] text-ink-soft">
-              Hívj minket, vagy küldj üzenetet és visszakeresünk.
+            </h2>
+            <p className="mt-2.5 max-w-sm text-[15px] leading-relaxed text-ink-soft">
+              Hívj minket, vagy küldj üzenetet és visszakeresünk. A legtöbb kérdésre
+              telefonon tudunk a leggyorsabban válaszolni.
             </p>
             <a
               href={SITE.phoneHref}
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-lg font-bold text-white transition-colors hover:bg-brand-dark"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-lg font-bold text-white transition-colors hover:bg-brand-dark sm:w-auto sm:px-10"
             >
+              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
+                <path
+                  d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"
+                  fill="currentColor"
+                />
+              </svg>
               {SITE.phone}
             </a>
-            <div className="mt-5 border-t border-rule pt-5">
-              <LeadForm listingId={listing.id} listingTitle={listing.title} compact />
-            </div>
+            <dl className="mt-8 space-y-3 border-t border-rule pt-6 text-[14px]">
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 text-ink-soft">Átvétel</dt>
+                <dd className="font-semibold">{SITE.address}</dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 text-ink-soft">Szállítás</dt>
+                <dd className="font-semibold">Országos, futárral vagy személyesen</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="lg:border-l lg:border-rule lg:pl-14">
+            <LeadForm listingId={listing.id} listingTitle={listing.title} />
           </div>
         </div>
-      </div>
+      </section>
 
       {related.length > 0 && (
         <section className="mt-20">

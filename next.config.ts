@@ -5,17 +5,23 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@electric-sql/pglite", "sharp", "postgres"],
 
   images: {
-    // Local uploads are served from /uploads. When Supabase Storage is configured,
-    // images come from its CDN host instead, which must be allow-listed here.
-    remotePatterns: process.env.SUPABASE_URL
-      ? [
-          {
-            protocol: "https",
-            hostname: new URL(process.env.SUPABASE_URL).hostname,
-            pathname: "/storage/v1/object/public/**",
-          },
-        ]
-      : [],
+    /*
+     * Local uploads are served from /uploads; with Supabase Storage configured they come
+     * from the project's CDN host, which next/image requires to be allow-listed.
+     *
+     * Matched by wildcard rather than read from SUPABASE_URL, because this file is
+     * evaluated once at build time: a deployment built before that variable was set (or
+     * set to the wrong value — the Postgres URL is an easy mix-up) baked in an allow-list
+     * that no longer matches, and every image then failed at runtime with no clue why.
+     * The path stays pinned to public storage objects.
+     */
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
   },
 
   async redirects() {
