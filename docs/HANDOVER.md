@@ -7,9 +7,9 @@ There are four separate things to move, and they are independent:
 
 | What | Where it lives now | Moves to |
 |---|---|---|
-| Code | GitHub repo | Owner's GitHub account |
-| Hosting | Vercel project, **Realfood Budapest** team | Owner's own Vercel account |
-| Database + photos | Supabase project | Owner's Supabase organisation |
+| Code | GitHub repo | ✅ done — `oliverfarago0123/olifelni` |
+| Hosting | Vercel project, **Realfood Budapest** team | New project on the owner's account |
+| Database + photos | Supabase project | ✅ done — transferred |
 | Domain | **Live on Vercel.** Registrar + DNS still Wix | Moves with the Vercel project |
 
 **Steps 1 and 2 cannot take the site down.** Vercel keeps serving the last successful
@@ -103,53 +103,88 @@ until step 3 reconnects it. The live site is unaffected.
 Nothing in the repo contains secrets — `.env*` is git-ignored and only `.env.example`
 (placeholders) is committed — so the transfer carries no credentials with it.
 
-## 3. Vercel — getting it off the Realfood Budapest plan
+## 3. Vercel — a fresh project on the owner's account
 
-This is the step that can cause an outage, because olifelni.com is already serving live
-traffic from this project. A domain can only belong to one Vercel project at a time, so
-there is a window between removing it from the old project and it being verified on the
-new one. Expect seconds to a couple of minutes while Vercel issues a TLS certificate for
-the new project.
+Not a project transfer. The owner creates their own project from the repo, it is validated
+on its own `*.vercel.app` URL while the current site carries on serving, and only then does
+the domain move. The live site is exposed for the length of the domain swap and no longer.
 
-**The DNS records at Wix do not change.** They point at Vercel's shared edge
-(`cname.vercel-dns.com` for www, and an anycast A record for the apex), not at a specific
-project, so nothing needs editing on the Wix side.
+### 3.1 Set the default branch to `main` first
 
-Do it at a quiet hour, with both accounts open and ready.
+The repo's default branch is currently `bencevas/clone-olifelni-wheels-site`. Vercel builds
+Production from the default branch, so importing as-is wires the project to a feature
+branch. Both are on the same commit today, so it would appear to work — and then a later
+push to `main` would silently never deploy.
 
-1. Owner signs in to their own Vercel account and accepts the invite.
-2. Realfood Budapest team → the project → Settings → General → **Transfer Project** →
-   to the owner's account.
-3. Move the domain to the new project — remove `olifelni.com` and `www.olifelni.com` from
-   the old project, add them to the new one, and let the certificate issue.
-4. Verify straight away:
+GitHub → repo → Settings → General → Default branch → **`main`**. Delete the old branch
+once done.
+
+### 3.2 Import the repo
+
+Owner's Vercel → **Add New → Project** → import `oliverfarago0123/olifelni`. Next.js is
+detected automatically; the root directory is the repo root. `vercel.json` already pins the
+region to `fra1` (Frankfurt), so there is nothing to choose.
+
+### 3.3 Add the environment variables *before the first deploy*
+
+Deploying without them produces a build that succeeds and then 500s on every page, because
+the app refuses to fall back to local-disk storage in a serverless environment.
+
+| Name | Value |
+|---|---|
+| `DATABASE_URL` | Supabase **transaction pooler** string, port **6543** |
+| `SUPABASE_URL` | `https://<ref>.supabase.co` — the API origin, *not* the Postgres URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | the `service_role` secret |
+| `NEXT_PUBLIC_SITE_URL` | `https://www.olifelni.com` |
+
+Use the **rotated** credentials from step 0.2 here, so rotation and setup happen in one
+pass rather than twice.
+
+`SUPABASE_URL` and `DATABASE_URL` are both called a URL and are easy to swap. Getting it
+wrong is caught now rather than in production — `SUPABASE_URL` is validated as an https
+origin, and `/api/health` names the mistake.
+
+### 3.4 Deploy and verify on the Vercel URL
+
+Nothing is at risk here; the live site is still on the old project.
+
+```bash
+curl -s https://<new-project>.vercel.app/api/health     # expect "ok": true, 150 listings
+```
+
+Then open it and confirm photos load, filters work, and a listing page renders. Photos
+failing means `SUPABASE_URL` is wrong or the storage bucket is not public.
+
+### 3.5 Move the domain
+
+A domain belongs to one Vercel project at a time, so this is the only step with exposure —
+expect seconds to a couple of minutes while the certificate is issued. Do it at a quiet
+hour. **The DNS records at Wix do not change**; they point at Vercel's shared edge, not at
+a project.
+
+1. Old project (Realfood Budapest) → Settings → Domains → remove `olifelni.com` and
+   `www.olifelni.com`.
+2. New project → Settings → Domains → add both, keeping the apex redirecting to `www`.
+3. Verify immediately:
 
    ```bash
-   curl -sI https://www.olifelni.com | head -1            # expect 200
-   curl -s https://www.olifelni.com/api/health            # expect "ok": true
+   curl -sI https://www.olifelni.com | head -1        # expect 200
+   curl -s  https://www.olifelni.com/api/health       # expect "ok": true
    ```
 
-5. Then, in the owner's account:
-   - **Check every environment variable came across** — `DATABASE_URL`, `SUPABASE_URL`,
-     `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SITE_URL`. Do not assume; open each one.
-   - **Reconnect the GitHub repo** (Settings → Git) to the owner's transferred repo.
-   - Push a trivial commit and confirm it builds and deploys.
-6. Confirm the project no longer appears under Realfood Budapest, so it stops being billed.
+**Do not delete the old project until this passes.** Re-adding the domain there is the
+rollback.
 
-**Keep your Realfood Budapest access until step 4 passes.** If the domain will not attach
-to the owner's project, re-adding it to the original project is the rollback, and that is
-only possible while you are still in that team. Leaving early removes the way back.
+### 3.6 Afterwards
 
-Watch for:
+- Delete the old project from Realfood Budapest so it stops being billed.
+- Push a trivial commit and confirm the owner's project builds and deploys from `main`.
 
-- **The `*.vercel.app` subdomain may change** if `olifelni` is taken in the owner's
-  account. Update `NEXT_PUBLIC_SITE_URL` to match, or it will be wrong in sitemap and
-  share-card URLs.
-- **Vercel's Hobby plan is for non-commercial use** under their fair-use terms. This is a
-  business site, so strictly it belongs on Pro ($20/mo). Plenty of small sites run on
-  Hobby, but it is the owner's risk to accept knowingly rather than discover later.
-- `vercel.json` pins the region to `fra1` (Frankfurt) and travels with the repo — nothing
-  to redo.
+On the free plan, two things to know: Vercel's Hobby tier is **non-commercial** under their
+fair-use terms, so strictly a business site belongs on Pro ($20/mo) — worth accepting
+knowingly rather than discovering later. And Hobby caps serverless functions at **10s**
+against Pro's 60s; ordinary page loads are far under that, but a cold start against a
+paused Supabase project can hit it.
 
 ## 4. Wix — what is still tied to it
 
