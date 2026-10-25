@@ -25,7 +25,7 @@ export function StatusControls({
   };
 
   return (
-    <div className="flex shrink-0 items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <select
         value={status}
         disabled={pending}
