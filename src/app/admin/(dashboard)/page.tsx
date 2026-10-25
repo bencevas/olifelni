@@ -8,6 +8,7 @@ import { STATUS_LABEL } from "@/lib/labels";
 import { specLine } from "@/lib/listings";
 import { StatusControls } from "@/components/admin/status-controls";
 import { OrderControls } from "@/components/admin/order-controls";
+import { SortableGrid } from "@/components/admin/sortable-grid";
 
 type Search = { q?: string; statusz?: string; tipus?: string; mentve?: string; torolve?: string };
 
@@ -118,67 +119,73 @@ export default async function AdminListings({
         </button>
       </form>
 
-      <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {rows.map((l) => {
+      {rows.length > 1 && (
+        <p className="mt-4 text-sm text-ink-soft">
+          A sorrendet a kártyák húzásával is módosíthatod — telefonon nyomd hosszan, majd húzd.
+        </p>
+      )}
+
+      <SortableGrid
+        items={rows.map((l) => {
           const cover = covers.get(l.id);
           const sold = l.status === "sold";
-          return (
-            <li
-              key={l.id}
-              className="flex flex-col overflow-hidden rounded-xl border border-rule-soft bg-surface"
-            >
-              <Link href={`/admin/${l.id}`} className="relative block aspect-square bg-sheet">
-                {cover ? (
-                  <Image
-                    src={publicUrl(cover)}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1024px) 270px, (min-width: 640px) 33vw, 50vw"
-                    className={`object-cover ${sold ? "opacity-45 saturate-0" : ""}`}
-                  />
-                ) : (
-                  <span className="flex h-full items-center justify-center text-sm text-ink-soft">
-                    Nincs kép
-                  </span>
-                )}
-                {l.status !== "active" && (
-                  <span
-                    className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white ${
-                      sold ? "bg-carbon" : l.status === "hidden" ? "bg-ink-soft" : "bg-brand"
-                    }`}
-                  >
-                    {STATUS_LABEL[l.status]}
-                  </span>
-                )}
-              </Link>
+          return {
+            id: l.id,
+            card: (
+              <>
+                <Link href={`/admin/${l.id}`} className="relative block aspect-square bg-sheet">
+                  {cover ? (
+                    <Image
+                      src={publicUrl(cover)}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 270px, (min-width: 640px) 33vw, 50vw"
+                      className={`object-cover ${sold ? "opacity-45 saturate-0" : ""}`}
+                    />
+                  ) : (
+                    <span className="flex h-full items-center justify-center text-sm text-ink-soft">
+                      Nincs kép
+                    </span>
+                  )}
+                  {l.status !== "active" && (
+                    <span
+                      className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white ${
+                        sold ? "bg-carbon" : l.status === "hidden" ? "bg-ink-soft" : "bg-brand"
+                      }`}
+                    >
+                      {STATUS_LABEL[l.status]}
+                    </span>
+                  )}
+                </Link>
 
-              <div className="flex flex-1 flex-col gap-3 p-3">
-                <div className="flex-1">
-                  <Link href={`/admin/${l.id}`} className="font-bold leading-snug hover:text-brand-ink">
-                    {l.title}
-                  </Link>
-                  <p className="mt-0.5 text-[13px] text-ink-soft">
-                    {specLine(l) || "nincs megadva"}
-                  </p>
-                  <p className="mt-1 font-extrabold">{huf(l.priceHuf)}</p>
+                <div className="flex flex-1 flex-col gap-3 p-3">
+                  <div className="flex-1">
+                    <Link href={`/admin/${l.id}`} className="font-bold leading-snug hover:text-brand-ink">
+                      {l.title}
+                    </Link>
+                    <p className="mt-0.5 text-[13px] text-ink-soft">
+                      {specLine(l) || "nincs megadva"}
+                    </p>
+                    <p className="mt-1 font-extrabold">{huf(l.priceHuf)}</p>
+                  </div>
+
+                  <StatusControls id={l.id} status={l.status} />
+
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <OrderControls id={l.id} />
+                    <Link
+                      href={`/admin/${l.id}`}
+                      className="rounded-lg border border-rule px-3 py-2 text-sm font-bold hover:bg-sheet"
+                    >
+                      Szerkesztés
+                    </Link>
+                  </div>
                 </div>
-
-                <StatusControls id={l.id} status={l.status} />
-
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <OrderControls id={l.id} />
-                  <Link
-                    href={`/admin/${l.id}`}
-                    className="rounded-lg border border-rule px-3 py-2 text-sm font-bold hover:bg-sheet"
-                  >
-                    Szerkesztés
-                  </Link>
-                </div>
-              </div>
-            </li>
-          );
+              </>
+            ),
+          };
         })}
-      </ul>
+      />
 
       {!rows.length && (
         <p className="py-16 text-center text-ink-soft">Nincs a keresésnek megfelelő hirdetés.</p>
