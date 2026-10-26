@@ -33,7 +33,8 @@ const num = z.coerce.number().finite().optional().nullable();
 const emptyToNull = (v: unknown) => (v === "" || v === undefined ? null : v);
 
 const ListingSchema = z.object({
-  id: z.string().uuid().optional().nullable(),
+  // A new listing posts an empty id field; that means "create", not an invalid id.
+  id: z.preprocess(emptyToNull, z.string().uuid().optional().nullable()),
   kind: z.enum(["wheel", "tire"]),
   title: z.string().trim().min(2, "A cím kötelező."),
   slug: z.string().trim().optional().nullable(),

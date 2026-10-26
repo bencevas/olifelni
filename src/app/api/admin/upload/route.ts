@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
-import { storeImage } from "@/lib/storage";
+import { publicUrl, storeImage } from "@/lib/storage";
 import { slugify } from "@/lib/format";
 
 export const runtime = "nodejs";
@@ -26,8 +26,16 @@ export async function POST(request: Request) {
   const images = [];
   for (const file of files) {
     if (!file.type.startsWith("image/")) continue;
-    const stored = await storeImage(Buffer.from(await file.arrayBuffer()), hint);
-    images.push(stored);
+    try {
+      const stored = await storeImage(Buffer.from(await file.arrayBuffer()), hint);
+      images.push({ ...stored, url: publicUrl(stored.key) });
+    } catch (e) {
+      console.error(`upload failed for ${file.name} (${file.type}, ${file.size} bytes)`, e);
+      return NextResponse.json(
+        { error: `A(z) „${file.name}” kép feldolgozása nem sikerült. Próbáld JPEG formátumban.` },
+        { status: 422 },
+      );
+    }
   }
 
   if (!images.length) {

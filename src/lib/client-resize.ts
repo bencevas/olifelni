@@ -10,15 +10,35 @@
 const MAX_EDGE = 1600;
 const QUALITY = 0.85;
 
+const isHeic = (file: File) =>
+  /^image\/hei[cf]/.test(file.type) || /\.hei[cf]$/i.test(file.name);
+
+/**
+ * iPhone photos are HEIC. Safari decodes them, but Chrome and Firefox do not, and neither
+ * can the server: sharp's prebuilt libvips has no HEVC decoder. So a HEIC the browser
+ * cannot read is decoded here with libheif compiled to WASM. That is ~3 MB, so it is only
+ * fetched the first time a HEIC actually needs it.
+ */
+async function decode(file: File): Promise<ImageBitmap> {
+  try {
+    return await createImageBitmap(file);
+  } catch (e) {
+    if (!isHeic(file)) throw e;
+    const { heicTo } = await import("heic-to/next");
+    return heicTo({ blob: file, type: "bitmap" });
+  }
+}
+
 export async function resizeForUpload(file: File): Promise<File> {
-  if (!file.type.startsWith("image/")) return file;
+  if (!file.type.startsWith("image/") && !isHeic(file)) return file;
 
   try {
-    const bitmap = await createImageBitmap(file);
+    const bitmap = await decode(file);
     const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
 
-    // Already small enough — re-encoding would only lose quality.
-    if (scale === 1 && file.size < 1_500_000) {
+    // Already small enough — re-encoding would only lose quality. HEIC always converts,
+    // because the server cannot read it.
+    if (scale === 1 && file.size < 1_500_000 && !isHeic(file)) {
       bitmap.close();
       return file;
     }
@@ -39,7 +59,12 @@ export async function resizeForUpload(file: File): Promise<File> {
 
     return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
   } catch {
-    // Any failure (odd format, no bitmap support) just falls back to the original file.
+    if (isHeic(file)) {
+      throw new Error(
+        `A(z) „${file.name}” iPhone-kép (HEIC) nem nyitható meg. Exportáld JPEG-ként, és töltsd fel úgy.`,
+      );
+    }
+    // Any other failure (odd format, no bitmap support) falls back to the original file.
     return file;
   }
 }

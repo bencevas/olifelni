@@ -44,16 +44,18 @@ export function PhotoUploader({
 
       setProgress("Feltöltés…");
       const res = await fetch("/api/admin/upload", { method: "POST", body: form });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "A feltöltés nem sikerült.");
+      // A failure in front of the function (e.g. Vercel's 4.5 MB body limit) is not JSON.
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          data.error ??
+            (res.status === 413
+              ? "A képek túl nagyok. Tölts fel kevesebbet egyszerre."
+              : "A feltöltés nem sikerült."),
+        );
+      }
 
-      onChange([
-        ...value,
-        ...data.images.map((i: { key: string; width: number; height: number }) => ({
-          ...i,
-          url: `/uploads/${i.key}`,
-        })),
-      ]);
+      onChange([...value, ...(data.images as UploadedImage[])]);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -90,7 +92,7 @@ export function PhotoUploader({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,.heic,.heif"
         multiple
         className="hidden"
         onChange={(e) => handleFiles(e.target.files)}
