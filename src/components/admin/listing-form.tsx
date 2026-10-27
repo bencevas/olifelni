@@ -8,7 +8,7 @@ import { saveListing, type SaveState } from "@/app/admin/actions";
 import { huf, slugify } from "@/lib/format";
 import {
   BOLT_PATTERNS, CAR_MAKES, DIAMETERS, SEASON_LABEL,
-  STATUS_LABEL, TIRE_BRANDS, WHEEL_BRANDS, CONDITION_LABEL,
+  STATUS_LABEL, TIRE_BRANDS, WHEEL_BRANDS,
 } from "@/lib/labels";
 
 export type ListingFormValues = {
@@ -19,8 +19,6 @@ export type ListingFormValues = {
   description: string;
   priceHuf: number | "";
   status: "active" | "reserved" | "sold" | "hidden";
-  quantity: number;
-  condition: "new" | "used";
   diameterIn: string;
   widthIn: string;
   boltPattern: string;
@@ -39,7 +37,7 @@ export type ListingFormValues = {
 
 export const EMPTY_LISTING: ListingFormValues = {
   kind: "wheel", title: "", description: "", priceHuf: "", status: "active",
-  quantity: 4, condition: "used", diameterIn: "", widthIn: "", boltPattern: "",
+  diameterIn: "", widthIn: "", boltPattern: "",
   offsetEt: "", centreBoreMm: "", carMake: "", wheelBrand: "", tireWidthMm: "",
   tireAspect: "", season: "", tireBrand: "", dotYear: "", treadMm: "", images: [],
 };
@@ -127,7 +125,7 @@ export function ListingForm({ initial }: { initial: ListingFormValues }) {
                 options={WHEEL_BRANDS.map((m) => ({ value: m, label: m }))} />
               <Field label="Szélesség (J)" name="widthIn" value={v.widthIn} onChange={(x) => set("widthIn", x)}
                 type="number" step="0.5" placeholder="8" hint="Pl. 8 vagy 8.5" />
-              <Field label="Beállítás (ET)" name="offsetEt" value={v.offsetEt} onChange={(x) => set("offsetEt", x)}
+              <Field label="ET" name="offsetEt" value={v.offsetEt} onChange={(x) => set("offsetEt", x)}
                 type="number" placeholder="38" />
               <Field label="Agyfurat (mm)" name="centreBoreMm" value={v.centreBoreMm}
                 onChange={(x) => set("centreBoreMm", x)} type="number" step="0.1" placeholder="66.6"
@@ -151,12 +149,6 @@ export function ListingForm({ initial }: { initial: ListingFormValues }) {
                 type="number" placeholder="2024" />
             </>
           )}
-
-          <Field label="Darabszám" name="quantity" value={String(v.quantity)}
-            onChange={(x) => set("quantity", Number(x) || 1)} type="number" />
-          <Select label="Állapot" name="condition" value={v.condition} onChange={(x) => set("condition", x as "new" | "used")}
-            options={Object.entries(CONDITION_LABEL).map(([value, label]) => ({ value, label }))}
-            allowEmpty={false} />
         </div>
       </Step>
 

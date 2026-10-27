@@ -5,7 +5,7 @@ import { ListingGrid } from "./listing-card";
 import { LeadForm } from "./lead-form";
 import { getListingBySlug, relatedListings } from "@/lib/listings";
 import { huf } from "@/lib/format";
-import { CONDITION_LABEL, SEASON_LABEL, STATUS_LABEL } from "@/lib/labels";
+import { SEASON_LABEL, STATUS_LABEL } from "@/lib/labels";
 import { SITE } from "@/lib/site";
 
 type Row = NonNullable<Awaited<ReturnType<typeof getListingBySlug>>>;
@@ -21,7 +21,7 @@ function specs(l: Row): [string, string][] {
     push("Átmérő", l.diameterIn, '"');
     push("Szélesség", l.widthIn, "J");
     push("Osztókör", l.boltPattern);
-    push("Beállítás (ET)", l.offsetEt);
+    push("ET", l.offsetEt);
     push("Agyfurat", l.centreBoreMm, " mm");
     push("Autó márka", l.carMake);
     push("Felni gyártó", l.wheelBrand);
@@ -35,8 +35,6 @@ function specs(l: Row): [string, string][] {
     push("DOT év", l.dotYear);
   }
 
-  push("Darabszám", l.quantity, " db");
-  push("Állapot", CONDITION_LABEL[l.condition]);
   return out;
 }
 
