@@ -22,12 +22,11 @@ export async function CatalogPage({
 }) {
   const filters = parseFilters(raw, kind);
 
-  const [bounds, diameters, bolts, makes, wheelBrands, tireBrands, seasons] = await Promise.all([
+  const [bounds, diameters, bolts, makes, tireBrands, seasons] = await Promise.all([
     priceBounds(filters),
     facetCounts(filters, "diameterIn"),
     kind === "wheel" ? facetCounts(filters, "boltPattern") : [],
     kind === "wheel" ? facetCounts(filters, "carMake") : [],
-    kind === "wheel" ? facetCounts(filters, "wheelBrand") : [],
     kind === "tire" ? facetCounts(filters, "tireBrand") : [],
     kind === "tire" ? facetCounts(filters, "season") : [],
   ]);
@@ -45,7 +44,6 @@ export async function CatalogPage({
       ? [
           { param: PARAM.boltPattern, label: "Osztókör", options: bolts.map((o) => ({ ...o, label: o.value })) },
           { param: PARAM.carMake, label: "Márka", options: makes.map((o) => ({ ...o, label: o.value })) },
-          { param: PARAM.wheelBrand, label: "Felni gyártó", options: wheelBrands.map((o) => ({ ...o, label: o.value })) },
         ]
       : [
           {
