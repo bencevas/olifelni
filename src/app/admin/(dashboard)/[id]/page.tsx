@@ -32,8 +32,6 @@ export default async function EditListingPage({
     description: l.description,
     priceHuf: l.priceHuf,
     status: l.status,
-    quantity: l.quantity,
-    condition: l.condition,
     diameterIn: str(l.diameterIn),
     widthIn: str(l.widthIn),
     boltPattern: str(l.boltPattern),

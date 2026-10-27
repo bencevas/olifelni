@@ -41,8 +41,6 @@ const ListingSchema = z.object({
   description: z.string().trim().default(""),
   priceHuf: z.coerce.number().int().min(0, "Az ár nem lehet negatív."),
   status: z.enum(["active", "reserved", "sold", "hidden"]).default("active"),
-  quantity: z.coerce.number().int().min(1).max(20).default(4),
-  condition: z.enum(["new", "used"]).default("used"),
 
   diameterIn: z.preprocess(emptyToNull, num),
   widthIn: z.preprocess(emptyToNull, num),
@@ -116,8 +114,6 @@ export async function saveListing(_prev: SaveState, formData: FormData): Promise
     description: d.description ?? "",
     priceHuf: d.priceHuf,
     status: d.status,
-    quantity: d.quantity,
-    condition: d.condition,
     diameterIn: d.diameterIn ?? null,
 
     widthIn: isWheel ? (d.widthIn ?? null) : null,

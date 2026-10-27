@@ -16,8 +16,6 @@ export const SEASON_LABEL = {
   all_season: "Négy évszakos",
 } as const;
 
-export const CONDITION_LABEL = { new: "Új", used: "Használt" } as const;
-
 /** Closed sets for the admin form — typing is where 5x114,3 / 5x114.3 / 5x1143 comes from. */
 export const BOLT_PATTERNS = [
   "4x98", "4x100", "4x108", "5x98", "5x100", "5x108",
