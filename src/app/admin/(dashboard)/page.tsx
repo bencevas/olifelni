@@ -169,7 +169,7 @@ export default async function AdminListings({
                     <p className="mt-1 font-extrabold">{huf(l.priceHuf)}</p>
                   </div>
 
-                  <StatusControls id={l.id} status={l.status} />
+                  <StatusControls id={l.id} title={l.title} status={l.status} />
 
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <OrderControls id={l.id} />

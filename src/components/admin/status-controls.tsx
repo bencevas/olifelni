@@ -1,18 +1,21 @@
 "use client";
 
 import { useTransition } from "react";
-import { setStatus } from "@/app/admin/actions";
+import { deleteFromList, setStatus } from "@/app/admin/actions";
 import { STATUS_LABEL } from "@/lib/labels";
 
 /**
  * Marking a set sold is the owner's most frequent action — far more frequent than creating
- * a listing — so it is one click from the list, not buried in the edit form.
+ * a listing — so it is one click from the list, not buried in the edit form. Deleting sits
+ * beside it, behind a confirmation naming the listing.
  */
 export function StatusControls({
   id,
+  title,
   status,
 }: {
   id: string;
+  title: string;
   status: keyof typeof STATUS_LABEL;
 }) {
   const [pending, start] = useTransition();
@@ -25,7 +28,7 @@ export function StatusControls({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-1.5">
       <select
         value={status}
         disabled={pending}
@@ -35,7 +38,7 @@ export function StatusControls({
             void setStatus(id, e.target.value as keyof typeof STATUS_LABEL);
           })
         }
-        className={`rounded-lg border px-3 py-2 text-sm font-bold disabled:opacity-50 ${tone[status]}`}
+        className={`rounded-lg border px-2.5 py-2 text-sm font-bold disabled:opacity-50 ${tone[status]}`}
       >
         {Object.entries(STATUS_LABEL).map(([v, l]) => (
           <option key={v} value={v}>{l}</option>
@@ -47,11 +50,24 @@ export function StatusControls({
           type="button"
           disabled={pending}
           onClick={() => start(() => { void setStatus(id, "sold"); })}
-          className="rounded-lg border border-rule px-3 py-2 text-sm font-bold hover:bg-sheet disabled:opacity-50"
+          className="rounded-lg border border-rule px-2.5 py-2 text-sm font-bold hover:bg-sheet disabled:opacity-50"
         >
           Eladva
         </button>
       )}
+
+      <button
+        type="button"
+        disabled={pending}
+        onClick={() => {
+          if (confirm(`Biztosan törlöd ezt a hirdetést?\n\n${title}\n\nEz nem vonható vissza, a képek is törlődnek.`)) {
+            start(() => deleteFromList(id));
+          }
+        }}
+        className="rounded-lg border border-brand px-2.5 py-2 text-sm font-bold text-brand-ink hover:bg-brand/10 disabled:opacity-50"
+      >
+        Törlés
+      </button>
     </div>
   );
 }

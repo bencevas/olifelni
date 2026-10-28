@@ -137,3 +137,5 @@ Ha elintézted, nyomd meg az **Elintézve** gombot, hogy eltűnjön a számlál�
 - **Az ár csak szám legyen.** Ne írj bele szóközt, pontot vagy „Ft"-ot.
 - **A képek sorrendje számít.** Az első kép adja el a hirdetést — a legszebb legyen elöl.
 - **Ne töröld, ha eladtad.** Állítsd `Eladva`-ra. A törlés végleges, és a képeket is viszi.
+  Ha mégis törölni kell, a **Törlés** gomb ott van minden kártyán az Eladva mellett; előtte
+  rákérdez, biztos-e.
