@@ -275,6 +275,17 @@ export async function placeListing(id: string, afterId: string | null, beforeId:
 
 export async function deleteListing(id: string) {
   await requireUser();
+  await removeListing(id);
+  redirect("/admin?torolve=1");
+}
+
+/** Delete from the card grid: the grid just refreshes, keeping the open tab and filters. */
+export async function deleteFromList(id: string) {
+  await requireUser();
+  await removeListing(id);
+}
+
+async function removeListing(id: string) {
   const imgs = await db.select().from(listingImages).where(eq(listingImages.listingId, id));
 
   // Only remove a file if no other listing still points at it (duplicates share a key,
@@ -289,7 +300,6 @@ export async function deleteListing(id: string) {
 
   await db.delete(listings).where(eq(listings.id, id));
   revalidatePath("/", "layout");
-  redirect("/admin?torolve=1");
 }
 
 /** Clones a listing. Stock arrives in near-identical sets; retyping ten fields is waste. */
