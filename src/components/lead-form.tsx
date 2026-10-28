@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { submitLead, type LeadState } from "@/app/actions/lead";
 import { SITE } from "@/lib/site";
+import { trackEvent } from "./page-view-beacon";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -28,6 +29,14 @@ export function LeadForm({
   compact?: boolean;
 }) {
   const [state, action] = useActionState<LeadState, FormData>(submitLead, { ok: false });
+
+  const tracked = useRef(false);
+  useEffect(() => {
+    if (state.ok && !tracked.current) {
+      tracked.current = true;
+      trackEvent("enquiry");
+    }
+  }, [state.ok]);
 
   if (state.ok) {
     return (

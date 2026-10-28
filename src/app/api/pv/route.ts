@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { db, pageViews } from "@/lib/db";
+import { TRACKED_EVENTS, type TrackedEvent } from "@/lib/tracking";
 import { SESSION_COOKIE } from "@/lib/auth";
 
 export const runtime = "nodejs";
@@ -17,8 +18,9 @@ const budapestDay = () =>
   new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Budapest" }).format(new Date());
 
 /**
- * Page-view beacon: POST /api/pv { path, referrer }, sent by PageViewBeacon on each public
- * page. Always answers 204 — a stats failure must never surface on the site.
+ * Page-view beacon: POST /api/pv { path, referrer, event? }, sent by PageViewBeacon on each
+ * public page and on contact clicks. Always answers 204 — a stats failure must never
+ * surface on the site.
  *
  * Not counted: bots, the admin's own browsing (anyone with a session cookie), and admin
  * or API paths. Sent from the browser rather than logged on the server, so crawlers that
@@ -30,7 +32,9 @@ export async function POST(request: Request) {
     if (!ua || BOT.test(ua)) return done();
     if (request.headers.get("cookie")?.includes(`${SESSION_COOKIE}=`)) return done();
 
-    const body = (await request.json().catch(() => null)) as { path?: unknown; referrer?: unknown } | null;
+    const body = (await request.json().catch(() => null)) as
+      | { path?: unknown; referrer?: unknown; event?: unknown }
+      | null;
     const path = typeof body?.path === "string" ? body.path : "";
     if (!path.startsWith("/") || path.length > 300 || /^\/(admin|api)(\/|$)/.test(path)) return done();
 
@@ -45,6 +49,7 @@ export async function POST(request: Request) {
       visitor,
       referrer: externalHost(body?.referrer, request),
       mobile: MOBILE.test(ua),
+      event: TRACKED_EVENTS.includes(body?.event as TrackedEvent) ? (body!.event as TrackedEvent) : null,
     });
   } catch (e) {
     console.error("page view not recorded", e);

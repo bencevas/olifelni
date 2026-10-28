@@ -1,22 +1,15 @@
 import Link from "next/link";
-import { and, desc, gte, like, notLike, or, sql } from "drizzle-orm";
+import { and, desc, gte, isNotNull, isNull, like, notLike, or, sql } from "drizzle-orm";
 import { db, leads, listings, pageViews } from "@/lib/db";
+import { EVENT_LABEL, TRACKED_EVENTS, type TrackedEvent } from "@/lib/tracking";
+import { PAGE_NAMES, TZ, day, nf, todayKey, tz } from "./shared";
 
 const RANGES = [7, 30, 90] as const;
 type Range = (typeof RANGES)[number];
 
-const TZ = "Europe/Budapest";
-/**
- * Inlined rather than bound: Postgres matches a GROUP BY expression to the SELECT one by
- * its text, and two separate $n parameters never count as the same expression.
- */
-const tz = sql.raw(`'${TZ}'`);
-const nf = new Intl.NumberFormat("hu-HU");
-
 /** Midnight in Budapest, `days - 1` days ago — so "7 nap" is today plus the six before. */
 const since = (days: number) =>
   sql`(date_trunc('day', now() at time zone ${tz}) - make_interval(days => ${days - 1})) at time zone ${tz}`;
-const day = sql<string>`to_char(${pageViews.createdAt} at time zone ${tz}, 'YYYY-MM-DD')`;
 /** A visitor id is only stable for one day, so a "visitor" is a (day, id) pair. */
 const visitorDays = sql<number>`count(distinct (${day} || ${pageViews.visitor}))::int`;
 const views = sql<number>`count(*)::int`;
@@ -24,10 +17,13 @@ const views = sql<number>`count(*)::int`;
 export default async function StatsPage({ searchParams }: { searchParams: Promise<{ nap?: string }> }) {
   const sp = await searchParams;
   const range: Range = RANGES.find((r) => String(r) === sp.nap) ?? 30;
-  const inRange = gte(pageViews.createdAt, since(range));
+  // Page views and contact clicks share the table; everything but the contact section
+  // counts page views only.
+  const inRange = and(gte(pageViews.createdAt, since(range)), isNull(pageViews.event));
+  const clicksInRange = and(gte(pageViews.createdAt, since(range)), isNotNull(pageViews.event));
   const isListing = or(like(pageViews.path, "/felni/%"), like(pageViews.path, "/gumi/%"));
 
-  const [daily, [enquiries], topListings, topPages, referrers, [device]] = await Promise.all([
+  const [daily, [enquiries], topListings, topPages, referrers, [device], clicks, clickedListings] = await Promise.all([
     db.select({ day, views, visitors: sql<number>`count(distinct ${pageViews.visitor})::int` })
       .from(pageViews).where(inRange).groupBy(day),
 
@@ -55,12 +51,24 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
       mobile: sql<number>`count(distinct (${day} || ${pageViews.visitor})) filter (where ${pageViews.mobile})::int`,
       all: visitorDays,
     }).from(pageViews).where(inRange),
+
+    db.select({ event: pageViews.event, n: sql<number>`count(*)::int` })
+      .from(pageViews).where(clicksInRange).groupBy(pageViews.event),
+
+    db.select({ path: pageViews.path, title: listings.title, n: sql<number>`count(*)::int` })
+      .from(pageViews)
+      .leftJoin(listings, sql`${listings.slug} = split_part(${pageViews.path}, '/', 3)`)
+      .where(and(clicksInRange, isListing))
+      .groupBy(pageViews.path, listings.title)
+      .orderBy(desc(sql`count(*)`))
+      .limit(5),
   ]);
+  const clickCount = (e: TrackedEvent) => clicks.find((c) => c.event === e)?.n ?? 0;
 
   // Every day in the range, including the ones nobody visited.
   // Counted from noon so a 23- or 25-hour daylight-saving day cannot skip or repeat a date.
   const byDay = new Map(daily.map((d) => [d.day, d]));
-  const todayNoon = new Date(`${new Intl.DateTimeFormat("sv-SE", { timeZone: TZ }).format(new Date())}T12:00:00Z`);
+  const todayNoon = new Date(`${todayKey()}T12:00:00Z`);
   const days = Array.from({ length: range }, (_, i) => {
     const date = new Date(todayNoon.getTime() - (range - 1 - i) * 86_400_000);
     const key = date.toISOString().slice(0, 10);
@@ -134,6 +142,37 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
             </details>
           </section>
 
+          <section className="mt-6 rounded-xl border border-rule-soft p-5">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 className="font-bold">Kapcsolatfelvétel</h2>
+              <Link href="/admin/statisztika/latogatok" className="text-sm font-bold text-brand-ink hover:underline">
+                Látogatók útja →
+              </Link>
+            </div>
+            <dl className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {TRACKED_EVENTS.map((e) => (
+                <div key={e} className="rounded-lg bg-sheet px-4 py-3">
+                  <dt className="text-sm text-ink-soft">{EVENT_LABEL[e]}</dt>
+                  <dd className="mt-0.5 text-2xl font-extrabold">{nf.format(clickCount(e))}</dd>
+                </div>
+              ))}
+            </dl>
+            {clickedListings.length > 0 && (
+              <p className="mt-4 text-sm text-ink-soft">
+                Legtöbbször ezeknél a hirdetéseknél:{" "}
+                {clickedListings.map((c, i) => (
+                  <span key={c.path}>
+                    {i > 0 && ", "}
+                    <a href={c.path} target="_blank" rel="noreferrer" className="font-semibold text-ink hover:text-brand-ink">
+                      {c.title ?? c.path}
+                    </a>{" "}
+                    ({nf.format(c.n)})
+                  </span>
+                ))}
+              </p>
+            )}
+          </section>
+
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
             <Ranked
               title="Legnézettebb hirdetések"
@@ -188,13 +227,6 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
     </div>
   );
 }
-
-const PAGE_NAMES: Record<string, string> = {
-  "/": "Főoldal",
-  "/felnik": "Felnik",
-  "/gumik": "Gumik",
-  "/kapcsolat": "Elérhetőség",
-};
 
 const shortDate = (d: Date) =>
   new Intl.DateTimeFormat("hu-HU", { timeZone: TZ, month: "short", day: "numeric" }).format(d);
