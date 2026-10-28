@@ -82,6 +82,25 @@ export const listingImages = pgTable(
   (t) => [index("listing_images_listing_idx").on(t.listingId, t.position)],
 );
 
+/**
+ * One row per public page view, for the admin's visitor stats. No cookies and no raw IP:
+ * `visitor` is a hash of IP + browser + a secret + the day, so a person counts once per
+ * day and cannot be followed from one day to the next.
+ */
+export const pageViews = pgTable(
+  "page_views",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    path: text("path").notNull(),
+    visitor: text("visitor").notNull(),
+    /** Hostname of the external site the visit came from; null when direct or unknown. */
+    referrer: text("referrer"),
+    mobile: boolean("mobile").default(false).notNull(),
+  },
+  (t) => [index("page_views_created_idx").on(t.createdAt)],
+);
+
 /** Contact-form submissions. This site generates leads; it does not sell. */
 export const leads = pgTable(
   "leads",

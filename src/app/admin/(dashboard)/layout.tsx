@@ -25,7 +25,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <span className="sr-only">Adminisztráció</span>
           </Link>
 
-          <nav className="flex items-center gap-5 text-[15px] font-semibold">
+          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[15px] font-semibold">
             <Link href="/admin" className="hover:text-brand-ink">Hirdetések</Link>
             <Link href="/admin/erdeklodesek" className="hover:text-brand-ink">
               Érdeklődések
@@ -35,6 +35,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 </span>
               )}
             </Link>
+            <Link href="/admin/statisztika" className="hover:text-brand-ink">Statisztika</Link>
             <Link href="/" className="text-ink-soft hover:text-brand-ink">Weboldal ↗</Link>
           </nav>
 

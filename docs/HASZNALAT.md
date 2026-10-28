@@ -98,6 +98,19 @@ A másolat **rejtett** állapotban jön létre, a képekkel együtt. Átírod, a
 
 ---
 
+## Statisztika: hányan nézik az oldalt
+
+A felső menüben a **Statisztika** oldalon látod:
+
+- hány **látogató** és **oldalmegtekintés** volt az utolsó 7, 30 vagy 90 napban, napi bontásban
+- mely **hirdetéseket nézik a legtöbben** — jó jelzés arra, mi kelendő
+- **honnan jöttek** (Google, Facebook, Használtautó stb.), és **telefonról vagy gépről**
+
+A számlálás sütik nélkül működik, egy látogató naponta egyszer számít. A saját böngészésed
+nem számít bele, amíg be vagy jelentkezve.
+
+---
+
 ## Érdeklődések
 
 Amikor valaki kitölti az űrlapot az oldalon, az üzenet az **Érdeklődések** fülön jelenik meg.
