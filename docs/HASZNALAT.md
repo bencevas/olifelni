@@ -106,8 +106,15 @@ A felső menüben a **Statisztika** oldalon látod:
 - mely **hirdetéseket nézik a legtöbben** — jó jelzés arra, mi kelendő
 - **honnan jöttek** (Google, Facebook, Használtautó stb.), és **telefonról vagy gépről**
 
-A számlálás sütik nélkül működik, egy látogató naponta egyszer számít. A saját böngészésed
-nem számít bele, amíg be vagy jelentkezve.
+- hányan **kattintottak a telefonszámra, az e-mailre vagy az útvonaltervezésre**, és hányan
+  **küldtek üzenetet** — és melyik hirdetésnél
+
+A **Látogatók útja** oldalon (a Statisztika oldalról nyílik) napra lebontva látod, hogy egy-egy
+látogató sorban milyen hirdetéseket és oldalakat nézett meg, és felvette-e a kapcsolatot. A
+**Kapcsolatot keresett** gombbal csak azokat látod, akik hívtak, írtak vagy útvonalat terveztek.
+
+A látogatók névtelenek: nem tudjuk, kik ők, és másnap már új látogatóként számítanak. A számlálás
+sütik nélkül működik. A saját böngészésed nem számít bele, amíg be vagy jelentkezve.
 
 ---
 

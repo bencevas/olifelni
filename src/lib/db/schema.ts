@@ -97,6 +97,8 @@ export const pageViews = pgTable(
     /** Hostname of the external site the visit came from; null when direct or unknown. */
     referrer: text("referrer"),
     mobile: boolean("mobile").default(false).notNull(),
+    /** Null for a page view; otherwise the contact action taken on `path` (see TRACKED_EVENTS). */
+    event: text("event"),
   },
   (t) => [index("page_views_created_idx").on(t.createdAt)],
 );
