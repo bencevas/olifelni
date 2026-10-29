@@ -6,22 +6,13 @@ const nextConfig: NextConfig = {
 
   images: {
     /*
-     * Local uploads are served from /uploads; with Supabase Storage configured they come
-     * from the project's CDN host, which next/image requires to be allow-listed.
-     *
-     * Matched by wildcard rather than read from SUPABASE_URL, because this file is
-     * evaluated once at build time: a deployment built before that variable was set (or
-     * set to the wrong value — the Postgres URL is an easy mix-up) baked in an allow-list
-     * that no longer matches, and every image then failed at runtime with no clue why.
-     * The path stays pinned to public storage objects.
+     * Our own loader instead of Vercel's image optimizer. The free plan's optimization quota
+     * ran out, and from then on every photo not already cached failed with 402 Payment
+     * Required. Photos are stored at fixed sizes instead (src/lib/storage.ts) and the loader
+     * picks one — see src/lib/image-loader.ts.
      */
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/**",
-      },
-    ],
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
   },
 
   async redirects() {
